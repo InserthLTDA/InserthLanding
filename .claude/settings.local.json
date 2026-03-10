@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where.exe python)",
+      "Read(//c/Users/Usuario/AppData/Local/Programs//**)"
+    ]
+  }
+}

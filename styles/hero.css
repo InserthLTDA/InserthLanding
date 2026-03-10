@@ -1,0 +1,434 @@
+/* ══════════════════════════════════
+   HERO — Gradient animado + layout lateral
+   Globo 3D na direita, texto na esquerda
+══════════════════════════════════ */
+
+/* ── Animated gradient background ── */
+@keyframes heroGradient {
+    0%   { background-position: 0% 50%;   }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%;   }
+}
+
+@keyframes eyebrowGlowRotate {
+    from { transform: translate(-50%, -50%) rotate(0deg);   }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes dotGlow {
+    0%, 100% {
+        box-shadow: 0 0 2px rgba(48,209,88,0.9),
+                    0 0 5px rgba(48,209,88,0.5);
+    }
+    50% {
+        box-shadow: 0 0 6px  rgba(48,209,88,1),
+                    0 0 14px rgba(48,209,88,0.6),
+                    0 0 24px rgba(48,209,88,0.2);
+    }
+}
+
+/* ── Hero section ── */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #080808;
+}
+
+/* ── Globe — absolute, right side only ── */
+.hero-globe {
+    position: absolute;
+    right: -5%;
+    top: 0;
+    width: 62%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.85;
+}
+
+.hero-globe iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none !important;
+    opacity: 0;
+    transition: opacity 2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.hero-globe iframe.loaded { opacity: 1; }
+
+/* ── Directional overlay: dark left → transparent right ── */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right,
+        rgba(8,8,8,0.97)   0%,
+        rgba(8,8,8,0.90)   25%,
+        rgba(8,8,8,0.60)   50%,
+        rgba(8,8,8,0.15)   70%,
+        transparent        100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ── Inner layout: full-width flex container ── */
+.hero-inner {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0;
+    padding: 0 0 0 max(40px, 5vw);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* ── Text content — left side ── */
+.hero-content {
+    width: 600px;
+    max-width: 600px;
+    text-align: left;
+    padding: 100px 0;
+}
+
+/* ── Eyebrow: "Em construção" with rotating glow border ── */
+.hero-eyebrow-wrap {
+    position: relative;
+    display: inline-flex;
+    border-radius: 980px;
+    margin-bottom: 28px;
+    padding: 1.5px;
+    overflow: hidden;
+    /* Brilho suave estático ao redor do elemento — independente da animação */
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 0 14px rgba(255,255,255,0.07),
+        0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Borda giratória — apenas a borda, sem contaminar o interior */
+.hero-eyebrow-wrap::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    aspect-ratio: 1;
+    left: 50%;
+    top: 50%;
+    background: conic-gradient(
+        from var(--glow-angle),
+        transparent    0deg,
+        transparent    300deg,
+        rgba(255,255,255,0.55) 345deg,
+        rgba(255,255,255,0.90) 358deg,
+        rgba(255,255,255,0.55) 360deg
+    );
+    animation: eyebrowGlowRotate 3s linear infinite;
+    z-index: 0;
+}
+
+.hero-eyebrow {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 980px;
+    /* Background sólido com brilho interno estático via gradiente radial */
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.07) 0%, transparent 70%),
+        #141414;
+    color: rgba(255,255,255,0.82);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+/* ── Green dot with subtle glow pulse ── */
+.hero-eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    flex-shrink: 0;
+    animation: dotGlow 2.2s ease-in-out infinite;
+}
+
+/* ── Title ── */
+.hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6.5vw, 82px);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    margin-bottom: 22px;
+    /* Branco com fade suave — SF Pro keynote */
+    background: linear-gradient(180deg, #ffffff 0%, #d1d1d6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Accent — contraste dentro do título, mais escurecido */
+.hero-title-accent {
+    background: linear-gradient(
+        160deg,
+        #ffffff     0%,
+        #e8e8ed    45%,
+        #aeaeb2   100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ── Subtitle ── */
+.hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 480px;
+    margin-bottom: 44px;
+    letter-spacing: 0.01em;
+}
+
+/* ── Action buttons ── */
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ════════════════════════════════
+   HERO BUTTONS — Premium & Dynamic
+════════════════════════════════ */
+
+/* Animações compartilhadas */
+@keyframes heroDotBreath {
+    0%, 100% { opacity: 1;    transform: scale(1);    }
+    50%       { opacity: 0.6;  transform: scale(0.8); }
+}
+@keyframes heroDotRing {
+    0%   { box-shadow: 0 0 0 0px  rgba(48,209,88,0.7); }
+    70%  { box-shadow: 0 0 0 8px  rgba(48,209,88,0.0); }
+    100% { box-shadow: 0 0 0 0px  rgba(48,209,88,0.0); }
+}
+@keyframes sweepShine {
+    0%   { transform: translateX(-150%) skewX(-20deg); }
+    100% { transform: translateX(200%) skewX(-20deg); }
+}
+
+/* ── Base compartilhada ── */
+.hero-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 28px 0 24px;
+    height: 54px;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+    transition:
+        transform    0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow   0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        background   0.4s ease,
+        color        0.4s ease,
+        border-color 0.4s ease;
+}
+.hero-btn:active {
+    transform: scale(0.96) !important;
+    transition-duration: 0.1s !important;
+}
+
+/* ──────────────────────────────
+   PRIMÁRIO — "Lista de espera"
+   Efeito metálico ultra-premium + Glare
+────────────────────────────── */
+.hero-btn--primary {
+    background: linear-gradient(180deg, #ffffff 0%, #f0f0f5 100%);
+    color: #080808;
+    box-shadow:
+        inset 0  1px 1px   rgba(255,255,255,1),
+        inset 0 -2px 1px   rgba(0,0,0,0.05),
+              0  4px 16px  rgba(0,0,0,0.2),
+              0  8px 32px  rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.hero-btn--primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.1) 0deg, rgba(255,255,255,1) 180deg, rgba(255,255,255,0.1) 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.hero-btn--primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+    box-shadow:
+        inset 0  1px 1px   rgba(255,255,255,1),
+        inset 0 -2px 1px   rgba(0,0,0,0.02),
+              0  12px 24px rgba(0,0,0,0.3),
+              0  20px 48px rgba(255,255,255,0.12),
+              0  0    24px rgba(255,255,255,0.2);
+}
+
+.hero-btn--primary:hover::before {
+    opacity: 1;
+}
+
+/* Reflexo de luz (Shine estético) */
+.hero-btn__shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.8),
+        transparent
+    );
+    transform: translateX(-150%) skewX(-20deg);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.hero-btn--primary:hover .hero-btn__shine {
+    animation: sweepShine 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.hero-btn--primary:not(:hover) .hero-btn__shine {
+    animation: none;
+    transform: translateX(-150%) skewX(-20deg);
+}
+
+/* Ponto de status verde */
+.hero-btn__dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #30d158;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(48,209,88,0.8);
+    animation: heroDotBreath 3s ease-in-out infinite;
+}
+/* Ring pulsante no hover do botão primário */
+.hero-btn__dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+}
+.hero-btn--primary:hover .hero-btn__dot::after {
+    animation: heroDotRing 2.5s ease-out infinite;
+}
+
+/* Ícone de seta */
+.hero-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0,0,0,0.4);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color    0.3s ease;
+}
+.hero-btn--primary:hover .hero-btn__icon {
+    transform: translateX(4px);
+    color: #000000;
+}
+
+/* ──────────────────────────────
+   FANTASMA — "Conheça o OPER"
+   Glassmorphism polido blur-heavy
+────────────────────────────── */
+.hero-btn--ghost {
+    background: rgba(255,255,255,0.02);
+    color: rgba(255,255,255,0.85);
+    padding: 0 28px;
+    box-shadow:
+              0 4px 16px rgba(0,0,0,0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.hero-btn--ghost::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.08) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.hero-btn--ghost:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow:
+              0  8px 24px rgba(0,0,0,0.3),
+              0  0   24px rgba(255,255,255,0.06);
+}
+
+.hero-btn--ghost:hover::before {
+    background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.2) 100%);
+}
+
+/* Efeito interno etéreo no ghost na área do clique (radial grad) */
+.hero-btn--ghost::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 100% at 50% 120%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+.hero-btn--ghost:hover::after {
+    opacity: 1;
+}
+
+/* ── Bottom fade transition ── */
+.hero-fade-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, #080808);
+    z-index: 4;
+    pointer-events: none;
+}

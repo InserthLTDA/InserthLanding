@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Globe</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Proxy para assets do servidor original -->
+    <script>
+    (function() {
+        const BASE = 'https://yoa3d.com';
+        const _fetch = window.fetch.bind(window);
+        window.fetch = function(input, init) {
+            let url = (typeof input === 'string') ? input
+                    : (input instanceof Request ? input.url : String(input));
+            if (url.startsWith('/') && !url.startsWith('//')) {
+                input = (input instanceof Request) ? new Request(BASE + url, input) : BASE + url;
+            }
+            return _fetch(input, init);
+        };
+        const _open = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+            if (typeof url === 'string' && url.startsWith('/') && !url.startsWith('//'))
+                url = BASE + url;
+            return _open.call(this, method, url, ...rest);
+        };
+    })();
+    </script>
+
+    <!-- Bundle do globo 3D (React + Three.js) -->
+    <script type="module" crossorigin src="index-BGhD91Gs.js"></script>
+    <link rel="stylesheet" crossorigin href="index-CH57f0n1.css">
+
+    <style>
+        /* Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%; height: 100%;
+            background: transparent;
+            overflow: hidden;
+            /* Bloqueia toda interação — globo é puramente decorativo */
+            pointer-events: none;
+            touch-action: none;
+            user-select: none;
+        }
+
+        #root { width: 100%; height: 100%; }
+
+        /* Oculta painel de controles e logo do globo */
+        .controls,
+        .logo-wrapper { display: none !important; }
+
+        /* ── HUD overlay (canvas de rede + cantos + réguas + coords) ── */
+        #hud {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Cantos SVG animados */
+        .corner {
+            position: absolute;
+            width: 72px;
+            height: 72px;
+        }
+        .corner svg { width: 100%; height: 100%; }
+
+        .corner--tl { top: 14px;    left: 14px; }
+        .corner--tr { top: 14px;    right: 14px;  transform: scaleX(-1); }
+        .corner--bl { bottom: 14px; left: 14px;   transform: scaleY(-1); }
+        .corner--br { bottom: 14px; right: 14px;  transform: scale(-1,-1); }
+
+        /* Tick labels */
+        .tick {
+            position: absolute;
+            font-family: 'Public Sans', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.38);
+            line-height: 1;
+        }
+        .tick--tl { top: 92px;    left: 18px; }
+        .tick--tr { top: 92px;    right: 18px; text-align: right; }
+        .tick--bl { bottom: 92px; left: 18px; }
+        .tick--br { bottom: 92px; right: 18px; text-align: right; }
+
+        /* Scan lines sutis */
+        #hud::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 3px,
+                rgba(255,255,255,0.012) 3px,
+                rgba(255,255,255,0.012) 4px
+            );
+        }
+
+        /* Canvas de nós/arestas */
+        #network-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Réguas de borda */
+        .ruler { position: absolute; background: rgba(255,255,255,0.07); }
+        .ruler--top    { top: 14px;    left: 86px; right: 86px; height: 1px; }
+        .ruler--bottom { bottom: 14px; left: 86px; right: 86px; height: 1px; }
+        .ruler--left   { left: 14px;   top: 86px; bottom: 86px; width: 1px; }
+        .ruler--right  { right: 14px;  top: 86px; bottom: 86px; width: 1px; }
+
+        .ruler--top::after, .ruler--bottom::after {
+            content: ''; position: absolute;
+            top: -4px; left: 50%;
+            width: 1px; height: 9px;
+            background: rgba(255,255,255,0.18);
+        }
+        .ruler--left::after, .ruler--right::after {
+            content: ''; position: absolute;
+            left: -4px; top: 50%;
+            width: 9px; height: 1px;
+            background: rgba(255,255,255,0.18);
+        }
+
+        /* Coordenadas */
+        .coord {
+            position: absolute;
+            font-family: 'Public Sans', monospace;
+            font-size: 8px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.22);
+            letter-spacing: .08em;
+        }
+        .coord--lat { bottom: 18px; left: 50%; transform: translateX(-50%); }
+        .coord--lon { top: 50%; right: 18px; transform: translateY(-50%) rotate(90deg); transform-origin: center; }
+
+        /* Animação dos cantos SVG */
+        @keyframes dash-in {
+            from { stroke-dashoffset: 200; }
+            to   { stroke-dashoffset: 0; }
+        }
+        .corner-path {
+            stroke: rgba(255,255,255,0.55);
+            stroke-width: 1.5;
+            fill: none;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: dash-in 1.2s cubic-bezier(.4,0,.2,1) forwards;
+        }
+        .corner--tr .corner-path { animation-delay: .1s; }
+        .corner--bl .corner-path { animation-delay: .2s; }
+        .corner--br .corner-path { animation-delay: .3s; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- HUD decorativo -->
+    <div id="hud">
+        <canvas id="network-canvas"></canvas>
+
+        <div class="ruler ruler--top"></div>
+        <div class="ruler ruler--bottom"></div>
+        <div class="ruler ruler--left"></div>
+        <div class="ruler ruler--right"></div>
+
+        <div class="corner corner--tl">
+            <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <path class="corner-path" d="M 4 36 L 4 4 L 36 4" />
+                <line x1="4" y1="4" x2="10" y2="4" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+                <line x1="4" y1="4" x2="4" y2="10" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+            </svg>
+        </div>
+        <div class="corner corner--tr">
+            <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <path class="corner-path" d="M 4 36 L 4 4 L 36 4" />
+            </svg>
+        </div>
+        <div class="corner corner--bl">
+            <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <path class="corner-path" d="M 4 36 L 4 4 L 36 4" />
+            </svg>
+        </div>
+        <div class="corner corner--br">
+            <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                <path class="corner-path" d="M 4 36 L 4 4 L 36 4" />
+            </svg>
+        </div>
+
+        <span class="tick tick--tl">SYS / 01</span>
+        <span class="tick tick--tr">NET / RDY</span>
+        <span class="tick tick--bl" id="tick-lat">LAT 0.0°</span>
+        <span class="tick tick--br" id="tick-lon">LON 0.0°</span>
+
+        <span class="coord coord--lat" id="coord-lat">— LATITUDE —</span>
+        <span class="coord coord--lon" id="coord-lon">— LONGITUDE —</span>
+    </div>
+
+    <script>
+    (() => {
+        const canvas = document.getElementById('network-canvas');
+        const ctx    = canvas.getContext('2d');
+
+        const NODE_COUNT   = 28;
+        const EDGE_DIST    = 220;
+        const CORNER_GUARD = 110;
+        const SPEED        = 0.18;
+
+        let W, H, nodes = [];
+
+        function resize() {
+            W = canvas.width  = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+
+        function randomPos() {
+            let x, y, tries = 0;
+            do {
+                x = Math.random() * W;
+                y = Math.random() * H;
+                tries++;
+                const inCorner =
+                    (x < CORNER_GUARD && y < CORNER_GUARD) ||
+                    (x > W - CORNER_GUARD && y < CORNER_GUARD) ||
+                    (x < CORNER_GUARD && y > H - CORNER_GUARD) ||
+                    (x > W - CORNER_GUARD && y > H - CORNER_GUARD);
+                if (!inCorner || tries > 40) break;
+            } while (true);
+            return { x, y };
+        }
+
+        function initNodes() {
+            nodes = Array.from({ length: NODE_COUNT }, () => {
+                const p     = randomPos();
+                const angle = Math.random() * Math.PI * 2;
+                return {
+                    x: p.x, y: p.y,
+                    vx: Math.cos(angle) * SPEED * (0.4 + Math.random()),
+                    vy: Math.sin(angle) * SPEED * (0.4 + Math.random()),
+                    r:  1.8 + Math.random() * 1.4,
+                    ping: Math.random() * Math.PI * 2,
+                };
+            });
+        }
+
+        function drawFrame() {
+            ctx.clearRect(0, 0, W, H);
+
+            for (const n of nodes) {
+                n.x += n.vx; n.y += n.vy; n.ping += 0.022;
+                if (n.x < 0 || n.x > W) n.vx *= -1;
+                if (n.y < 0 || n.y > H) n.vy *= -1;
+                n.x = Math.max(0, Math.min(W, n.x));
+                n.y = Math.max(0, Math.min(H, n.y));
+            }
+
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const a = nodes[i], b = nodes[j];
+                    const dx = a.x - b.x, dy = a.y - b.y;
+                    const d  = Math.sqrt(dx * dx + dy * dy);
+                    if (d > EDGE_DIST) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = `rgba(255,255,255,${(1 - d / EDGE_DIST) * 0.22})`;
+                    ctx.lineWidth = 0.7;
+                    ctx.stroke();
+                }
+            }
+
+            for (const n of nodes) {
+                const ping = Math.sin(n.ping) * .5 + .5;
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r + ping * 5, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255,255,255,${ping * 0.12})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${0.45 + ping * 0.35})`;
+                ctx.fill();
+            }
+
+            requestAnimationFrame(drawFrame);
+        }
+
+        /* Coordenadas simuladas */
+        let t = 0;
+        const latEl     = document.getElementById('coord-lat');
+        const lonEl     = document.getElementById('coord-lon');
+        const tickLat   = document.getElementById('tick-lat');
+        const tickLon   = document.getElementById('tick-lon');
+
+        function updateCoords() {
+            t += 0.003;
+            const lat    = (Math.sin(t * 0.7) * 85).toFixed(2);
+            const lon    = (((t * 18) % 360) - 180).toFixed(2);
+            const latStr = (lat > 0 ? '+' : '') + lat + '°';
+            const lonStr = (lon > 0 ? '+' : '') + lon + '°';
+            if (latEl)   latEl.textContent   = `— ${latStr} LATITUDE —`;
+            if (lonEl)   lonEl.textContent   = `— ${lonStr} LONGITUDE —`;
+            if (tickLat) tickLat.textContent = `LAT ${latStr}`;
+            if (tickLon) tickLon.textContent = `LON ${lonStr}`;
+            requestAnimationFrame(updateCoords);
+        }
+
+        window.addEventListener('resize', () => { resize(); initNodes(); });
+        resize();
+        initNodes();
+        drawFrame();
+        updateCoords();
+    })();
+    </script>
+</body>
+</html>

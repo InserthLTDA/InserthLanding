@@ -1,0 +1,160 @@
+/* ══════════════════════════════════
+   BASE — Reset, tipografia, layout
+══════════════════════════════════ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* Container centralizado */
+.container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 max(24px, 5vw);
+}
+
+/* ══════════════════════════════════
+   SCROLL PROGRESS BAR
+══════════════════════════════════ */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    z-index: 9999;
+    background: linear-gradient(90deg, #555555, #ffffff);
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
+    transition: width 0.1s linear;
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════
+   BUTTONS — Apple-grade
+══════════════════════════════════ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 980px;
+    cursor: pointer;
+    transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.22s ease,
+                background 0.22s ease,
+                opacity 0.22s ease;
+    border: none;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    position: relative;
+    /* sem overflow:hidden — era o causador do quadrado */
+}
+
+/* ── Filled — principal (sobre fundo escuro) ── */
+.btn-filled {
+    background: #f5f5f7;
+    color: #080808;
+    padding: 13px 26px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.btn-filled:hover {
+    background: #ffffff;
+    transform: scale(1.025) translateY(-1px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35),
+                0 2px 6px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.35);
+}
+.btn-filled:active {
+    transform: scale(0.98) translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ── Outline — secundário (sobre fundo escuro) ── */
+.btn-outline {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.88);
+    padding: 12px 26px;
+    /* Borda gradiente via box-shadow layering */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.20),
+                0 1px 2px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.btn-outline:hover {
+    background: rgba(255,255,255,0.09);
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42),
+                0 6px 20px rgba(0,0,0,0.25),
+                0 0 24px rgba(255,255,255,0.05);
+    transform: scale(1.025) translateY(-1px);
+}
+.btn-outline:active {
+    transform: scale(0.98);
+}
+
+/* ── Filled dark (seções claras) ── */
+.btn-filled-dark {
+    background: #1d1d1f;
+    color: #fff;
+    padding: 13px 26px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.btn-filled-dark:hover {
+    background: #2d2d2f;
+    transform: scale(1.02) translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+/* ── Outline dark (seções claras) ── */
+.btn-outline-dark {
+    background: transparent;
+    color: var(--text-dark);
+    padding: 12px 26px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18);
+}
+.btn-outline-dark:hover {
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.40);
+    background: rgba(0,0,0,0.03);
+    transform: scale(1.02) translateY(-1px);
+}
+
+/* ── Link com seta ── */
+.btn-link {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 400;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.btn-link:hover { opacity: 0.75; }
+.btn-link svg { transition: transform 0.2s ease; }
+.btn-link:hover svg { transform: translateX(3px); }
+
+/* ── Small ── */
+.btn-sm {
+    font-size: 14px;
+    padding: 8px 18px;
+}

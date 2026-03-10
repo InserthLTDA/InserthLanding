@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserth — Inteligência que trabalha por você</title>
+
+    <!-- ── Dependências externas ── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- ── Fontes — GT Walsheim → Plus Jakarta Sans → Inter ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,700;1,14..32,300&display=swap" rel="stylesheet">
+
+    <!-- ── Framework: Tailwind CSS (sem preflight para não conflitar) ── -->
+    <script>tailwind = { config: { corePlugins: { preflight: false } } }</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ── Estilos da aplicação ── -->
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/loader.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <link rel="stylesheet" href="styles/hero.css">
+    <link rel="stylesheet" href="styles/sections.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+</head>
+<body>
+
+    <!-- ── Scroll progress bar ── -->
+    <div id="scroll-progress"></div>
+
+    <!-- ════════════════════════════
+         PRELOADER
+    ════════════════════════════ -->
+    <div id="loader-container">
+        <div id="canvas-wrapper"></div>
+        <div id="loader-ui">
+            <div class="progress-wrapper" id="progress-wrap">
+                <div class="progress-numbers">
+                    <span id="pct">000</span>
+                    <span>100</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="bar"></div>
+                </div>
+            </div>
+        </div>
+        <div id="loader-curtain"></div>
+    </div>
+
+    <!-- ════════════════════════════
+         NAVIGATION
+    ════════════════════════════ -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <img src="assets/64branco.png" alt="Inserth" class="nav-logo-dark">
+                <img src="assets/64preto.png"  alt="Inserth" class="nav-logo-light">
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="#about"   onclick="closeMenu()">Sobre</a>
+                <a href="#product" onclick="closeMenu()">OPER</a>
+                <a href="#market"  onclick="closeMenu()">Mercado</a>
+                <a href="#pricing" onclick="closeMenu()">Planos</a>
+                <a href="#cta" class="nav-cta" onclick="closeMenu()">
+                    <span class="nav-cta-inner">
+                        <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="3.5" cy="3.5" r="3" fill="currentColor" opacity="0.9"/>
+                        </svg>
+                        Lista de espera
+                    </span>
+                </a>
+            </div>
+            <div class="nav-mobile-toggle" id="mobile-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ════════════════════════════
+         CONTEÚDO PRINCIPAL
+    ════════════════════════════ -->
+    <main id="main-content">
+
+        <!-- ── Hero ── -->
+        <section class="hero">
+            <div class="hero-globe" id="hero-globe">
+                <!-- Globo 3D injetado por loader.js após o preloader -->
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <div class="hero-eyebrow-wrap">
+                        <div class="hero-eyebrow">
+                            <div class="hero-eyebrow-dot"></div>
+                            Em construção
+                        </div>
+                    </div>
+                    <h1 class="hero-title">
+                        Inteligência que<br>
+                        <span class="hero-title-accent">trabalha por você.</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        IA que se insere de verdade no seu negócio. Automatize o operacional,
+                        recupere seu tempo e veja resultados reais.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#cta" class="hero-btn hero-btn--primary">
+                            <span class="hero-btn__shine"></span>
+                            <span class="hero-btn__dot"></span>
+                            <span class="hero-btn__label">Lista de espera</span>
+                            <span class="hero-btn__icon">
+                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                                    <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </a>
+                        <a href="#product" class="hero-btn hero-btn--ghost">
+                            <span class="hero-btn__label">Conheça o OPER</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-fade-bottom"></div>
+        </section>
+
+        <!-- ── Marquee ── -->
+        <div class="marquee">
+            <div class="marquee-track">
+                <span>Em construção</span>
+                <span>Pré-lançamento 2026</span>
+                <span>Primeiros clientes sendo validados</span>
+                <span>IA para PMEs brasileiras</span>
+                <span>WhatsApp first</span>
+                <span>Em construção</span>
+                <span>Pré-lançamento 2026</span>
+                <span>Primeiros clientes sendo validados</span>
+                <span>IA para PMEs brasileiras</span>
+                <span>WhatsApp first</span>
+            </div>
+        </div>
+
+        <!-- ── Sobre ── -->
+        <section class="section-white about" id="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text reveal-left">
+                        <div class="section-label">01 — Sobre</div>
+                        <h2 class="section-heading">Tecnologia que se insere de verdade no negócio.</h2>
+                        <p class="section-desc">
+                            A Inserth é especializada em inteligência artificial aplicada
+                            à gestão de pequenas e médias empresas brasileiras.
+                        </p>
+                        <p class="section-desc">
+                            Produtos que transformam o caos operacional em processos
+                            automatizados e eficazes — sem exigir que o dono aprenda
+                            tecnologia ou mude sua rotina.
+                        </p>
+                        <div class="about-quote reveal">
+                            Inteligência que trabalha por você.
+                        </div>
+                    </div>
+                    <div class="about-stats reveal-right">
+                        <div class="stat-card reveal-scale">
+                            <div class="stat-value">2026</div>
+                            <div class="stat-label">Fundação</div>
+                        </div>
+                        <div class="stat-card reveal-scale">
+                            <div class="stat-value">SaaS</div>
+                            <div class="stat-label">Assinatura mensal</div>
+                        </div>
+                        <div class="stat-card reveal-scale">
+                            <div class="stat-value">PMEs</div>
+                            <div class="stat-label">2 a 50 funcionários</div>
+                        </div>
+                        <div class="stat-card reveal-scale">
+                            <div class="stat-value">Brasil</div>
+                            <div class="stat-label">Mercado nacional</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── OPER ── -->
+        <section class="product" id="product">
+            <canvas id="oper-dots-canvas"></canvas>
+            <div class="product-bg-glow"></div>
+            <div class="container">
+
+                <!-- Hero header -->
+                <header class="product-hero">
+                    <span class="product-label">02 — Produto</span>
+                    <div class="product-name">OPER</div>
+                    <p class="product-tagline">O gerente de IA da sua empresa</p>
+                    <p class="product-hero-desc">
+                        Agente de IA operacional que funciona como gerente digital 24h.
+                        Organiza equipe, responde clientes, agenda e reporta — pelo WhatsApp.
+                    </p>
+                </header>
+
+                <!-- Bento grid de features — Apple × Notion -->
+                <div class="product-bento">
+
+                    <!-- Card 1: Wide — feature principal -->
+                    <div class="bento-card bento-wide">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <span class="bento-tag">Core</span>
+                        <h3 class="bento-title">Agente WhatsApp</h3>
+                        <p class="bento-desc">Lê mensagens, classifica e age automaticamente. Seu negócio respondendo 24h.</p>
+                        <div class="bento-glow"></div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3 class="bento-title">Gestão de equipe</h3>
+                        <p class="bento-desc">Funcionários reportam por WhatsApp. A IA organiza e entrega resumo claro.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <h3 class="bento-title">Follow-up automático</h3>
+                        <p class="bento-desc">Lead sem resposta recebe mensagem no timing certo. Nunca mais perca uma venda.</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3 class="bento-title">Relatório semanal</h3>
+                        <p class="bento-desc">Todo segunda, resumo em linguagem humana ou áudio sobre seu negócio.</p>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9"  x2="12"   y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3 class="bento-title">Alertas proativos</h3>
+                        <p class="bento-desc">Detecta padrão de problema antes de virar crise. Prevenção inteligente.</p>
+                    </div>
+
+                    <!-- Card 6: Full width — setup -->
+                    <div class="bento-card bento-full">
+                        <div class="bento-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <div class="bento-full-text">
+                            <h3 class="bento-title">Setup em 10 minutos</h3>
+                            <p class="bento-desc">Funciona em menos de 10 minutos após cadastro. Zero treinamento.</p>
+                        </div>
+                        <div class="bento-full-stat">10<small>min</small></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Mercado ── -->
+        <section class="section-white market" id="market">
+            <div class="container">
+                <div class="market-header reveal">
+                    <div class="section-label">03 — Mercado</div>
+                    <h2 class="section-heading">O tamanho do problema que resolvemos.</h2>
+                    <p class="section-desc">
+                        O dono de pequena empresa no Brasil trabalha 12h por dia — metade
+                        desse tempo em tarefas que não precisariam passar por ele.
+                    </p>
+                </div>
+
+                <div class="market-numbers reveal">
+                    <div class="market-stat">
+                        <div class="stat-value" data-target="7" data-suffix="M+">7M+</div>
+                        <div class="stat-label">PMEs no Brasil</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="stat-value" data-target="62" data-suffix="%">62%</div>
+                        <div class="stat-label">Sem sistema de gestão</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="stat-value">R$4,2B</div>
+                        <div class="stat-label">TAM total</div>
+                    </div>
+                    <div class="market-stat">
+                        <div class="stat-value">R$630M</div>
+                        <div class="stat-label">Mercado endereçável</div>
+                    </div>
+                </div>
+
+                <div class="advantages-grid">
+                    <div class="advantage-card">
+                        <div class="advantage-number">01</div>
+                        <h4>WhatsApp como interface</h4>
+                        <p>Nenhum concorrente usa WhatsApp como canal principal. Elimina a maioria da resistência de adoção.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-number">02</div>
+                        <h4>IA que age, não só mostra</h4>
+                        <p>Concorrentes mostram dados. O OPER age — manda mensagem, reorganiza agenda, cobra, reporta.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-number">03</div>
+                        <h4>Foco exclusivo em PME</h4>
+                        <p>Grandes ignoram empresas com menos de 50 funcionários. Nós construímos apenas para elas.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-number">04</div>
+                        <h4>Setup em 10 minutos</h4>
+                        <p>Qualquer produto funciona em menos de 10 minutos. Zero treinamento presencial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Nichos ── -->
+        <section class="niches" id="nichos">
+            <div class="container">
+                <div class="reveal">
+                    <div class="section-label">04 — Nichos</div>
+                    <h2 class="section-heading">Feito para quem mais precisa.</h2>
+                </div>
+                <div class="niches-grid">
+                    <div class="niche-card">
+                        <span class="niche-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            </svg>
+                        </span>
+                        <h4>Construtoras</h4>
+                        <p>Equipe no campo, OS perdida, obra sem controle</p>
+                    </div>
+                    <div class="niche-card">
+                        <span class="niche-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </span>
+                        <h4>Clínicas</h4>
+                        <p>Paciente que falta, agenda manual, retorno esquecido</p>
+                    </div>
+                    <div class="niche-card">
+                        <span class="niche-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </span>
+                        <h4>Salões</h4>
+                        <p>Horário vazio por esquecimento, comissão errada</p>
+                    </div>
+                    <div class="niche-card">
+                        <span class="niche-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </span>
+                        <h4>Agro</h4>
+                        <p>Insumo sem controle, equipe rural desorganizada</p>
+                    </div>
+                    <div class="niche-card">
+                        <span class="niche-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                        </span>
+                        <h4>Agências</h4>
+                        <p>Prazo estourado, cliente sem atualização</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Preços ── -->
+        <section class="pricing" id="pricing">
+            <div class="pricing-bg-glow"></div>
+            <div class="container">
+                <div class="pricing-header reveal">
+                    <div class="section-label">05 — Planos</div>
+                    <h2 class="section-heading">Simples. Sem contrato.</h2>
+                    <p class="section-desc">Cancele quando quiser. Comece em minutos.</p>
+                </div>
+                <div class="pricing-grid">
+
+                    <!-- Starter -->
+                    <div class="pricing-card">
+                        <div class="pricing-tier">Starter</div>
+                        <div class="pricing-product">OPER</div>
+                        <div class="pricing-price-wrap">
+                            <span class="pricing-currency">R$</span>
+                            <span class="pricing-amount">297</span>
+                            <span class="pricing-period">/mês</span>
+                        </div>
+                        <p class="pricing-desc">Gestão operacional completa para começar.</p>
+                        <ul class="pricing-features">
+                            <li>Agente WhatsApp IA</li>
+                            <li>Gestão de equipe</li>
+                            <li>Follow-up automático</li>
+                            <li>Relatório semanal</li>
+                            <li>Até 10 usuários</li>
+                        </ul>
+                        <button class="pricing-btn">Em breve</button>
+                    </div>
+
+                    <!-- Pro (Featured) -->
+                    <div class="pricing-card pricing-featured">
+                        <div class="pricing-popular">
+                            <svg width="6" height="6" viewBox="0 0 6 6" fill="currentColor"><circle cx="3" cy="3" r="3"/></svg>
+                            Mais popular
+                        </div>
+                        <div class="pricing-tier">Pro</div>
+                        <div class="pricing-product">OPER</div>
+                        <div class="pricing-price-wrap">
+                            <span class="pricing-currency">R$</span>
+                            <span class="pricing-amount">497</span>
+                            <span class="pricing-period">/mês</span>
+                        </div>
+                        <p class="pricing-desc">Stack completo com módulos adicionais.</p>
+                        <ul class="pricing-features">
+                            <li>Tudo do Starter</li>
+                            <li>Módulos BRIEF, COBRAR, PULSE</li>
+                            <li>Alertas proativos</li>
+                            <li>Relatório em áudio</li>
+                            <li>Usuários ilimitados</li>
+                        </ul>
+                        <button class="pricing-btn pricing-btn-green">Lista de espera</button>
+                    </div>
+
+                    <!-- Enterprise -->
+                    <div class="pricing-card">
+                        <div class="pricing-tier">Enterprise</div>
+                        <div class="pricing-product">White Label</div>
+                        <div class="pricing-price-wrap">
+                            <span class="pricing-currency">R$</span>
+                            <span class="pricing-amount">997</span>
+                            <span class="pricing-period">/mês</span>
+                        </div>
+                        <p class="pricing-desc">API para agências com sua marca.</p>
+                        <ul class="pricing-features">
+                            <li>API completa</li>
+                            <li>Marca própria</li>
+                            <li>Suporte prioritário</li>
+                            <li>Setup personalizado</li>
+                            <li>Dashboard dedicado</li>
+                        </ul>
+                        <button class="pricing-btn">Fale conosco</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ── CTA ── -->
+        <section class="cta" id="cta">
+            <div class="cta-glow"></div>
+            <div class="container cta-inner">
+                <div class="reveal">
+                    <img src="assets/64branco.png" alt="Inserth" class="cta-logo">
+                    <div class="cta-label">Estamos construindo algo grande</div>
+                    <h2 class="cta-heading">Seja um dos primeiros.</h2>
+                    <p class="section-desc">
+                        Entre na lista de espera e garanta condições exclusivas de lançamento.
+                    </p>
+                    <div class="cta-btn-wrap">
+                        <a href="#" class="btn btn-filled">Entrar na lista de espera</a>
+                    </div>
+                    <p class="cta-note">Acesso antecipado · Sem compromisso</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Footer ── -->
+        <footer class="footer">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="assets/128branco.png" alt="Inserth" class="footer-logo-img">
+                    <p class="footer-tagline">
+                        IA que se insere de verdade no seu negócio. Automatize o operacional, recupere seu tempo.
+                    </p>
+                    <span class="footer-badge">
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor">
+                            <circle cx="4" cy="4" r="4"/>
+                        </svg>
+                        Pré-lançamento 2026
+                    </span>
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-nav-col">
+                        <span class="footer-nav-heading">Produto</span>
+                        <a href="#product">OPER</a>
+                        <a href="#pricing">Planos</a>
+                        <a href="#nichos">Nichos</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <span class="footer-nav-heading">Empresa</span>
+                        <a href="#about">Sobre</a>
+                        <a href="#market">Mercado</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <span class="footer-nav-heading">Acesso</span>
+                        <a href="#cta">Lista de espera</a>
+                        <a href="#cta">Contato</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <span>© 2026 Inserth. Todos os direitos reservados.</span>
+                <div class="footer-bottom-links">
+                    <span>Brasil</span>
+                    <span>Pré-lançamento</span>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- ════════════════════════════
+         SCRIPTS
+    ════════════════════════════ -->
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/scroll.js"></script>
+    <script src="scripts/loader.js"></script>
+
+</body>
+</html> 

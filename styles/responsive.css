@@ -1,0 +1,103 @@
+/* ══════════════════════════════════
+   RESPONSIVE — Breakpoints
+   1024px → tablet
+   768px  → mobile
+   480px  → small mobile
+══════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    /* Hero: stack content on top, globe behind */
+    .hero-globe {
+        width: 80%;
+        right: -15%;
+        opacity: 0.5;
+    }
+    .hero-overlay {
+        background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.97)  0%,
+            rgba(0, 0, 0, 0.9)  40%,
+            rgba(0, 0, 0, 0.6)  65%,
+            rgba(0, 0, 0, 0.15)  85%,
+            transparent        100%);
+    }
+
+    .features-grid  { grid-template-columns: repeat(2, 1fr); }
+    .market-numbers { grid-template-columns: repeat(2, 1fr); }
+    .niches-grid    { grid-template-columns: repeat(3, 1fr); }
+
+    /* Footer */
+    .footer-top { grid-template-columns: 1fr; gap: 40px; }
+    .footer-nav  { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+    /* Hero: fully centered on mobile */
+    .hero-inner {
+        justify-content: center;
+    }
+    .hero-content {
+        text-align: center;
+        max-width: 100%;
+        padding: 120px 0 80px;
+    }
+    .hero-subtitle {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .hero-actions { justify-content: center; }
+    .hero-eyebrow-wrap { display: inline-flex; }
+    .hero-globe {
+        width: 100%;
+        right: 0;
+        opacity: 0.35;
+    }
+    .hero-overlay {
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    /* Nav mobile — menu fullscreen */
+    .nav-links {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.97);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+        z-index: 1000;
+    }
+    .nav-links.show      { display: flex; }
+    .nav-links a         { font-size: 18px; }
+    .nav-mobile-toggle   { display: flex; }
+
+    /* Layout adjustments */
+    .about-grid         { grid-template-columns: 1fr; gap: 48px; }
+    .features-grid      { grid-template-columns: 1fr; }
+    .market-numbers     { grid-template-columns: 1fr 1fr; }
+    .advantages-grid    { grid-template-columns: 1fr; }
+    .niches-grid        { grid-template-columns: 1fr 1fr; }
+    .pricing-grid       { grid-template-columns: 1fr; max-width: 400px; }
+
+    /* Footer */
+    .footer-top         { padding: 48px max(24px, 5vw) 32px; gap: 32px; }
+    .footer-nav         { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .footer-bottom      { flex-direction: column; gap: 8px; text-align: center; }
+    .footer-bottom-links { justify-content: center; }
+
+    /* Section padding */
+    .about, .product,
+    .market, .niches,
+    .pricing            { padding: 80px 0; }
+    .cta                { padding: 100px 0; }
+}
+
+@media (max-width: 480px) {
+    .niches-grid    { grid-template-columns: 1fr; }
+    .market-numbers { grid-template-columns: 1fr; }
+    .about-stats    { grid-template-columns: 1fr; }
+    .footer-nav     { grid-template-columns: 1fr 1fr; }
+    .hero-content   { padding: 100px 0 60px; }
+}

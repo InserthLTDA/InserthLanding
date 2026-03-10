@@ -1,0 +1,49 @@
+/* ══════════════════════════════════
+   DESIGN TOKENS — Inserth
+   Paleta: Preto → Cinza escuro → Branco
+══════════════════════════════════ */
+
+@property --glow-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+:root {
+    /* Backgrounds */
+    --bg:            #080808;
+    --bg-mid:        #1a1a1a;
+    --bg-accent:     #ffffff;
+    --bg-light:      #fafafa;
+    --surface:       #111111;
+    --surface-light: #f5f5f7;
+    --surface-hover: #1e1e1e;
+
+    /* Text */
+    --text:               #f5f5f7;
+    --text-secondary:     #888888;
+    --text-dark:          #1d1d1f;
+    --text-dark-secondary:#6e6e73;
+
+    /* Borders */
+    --border:       rgba(255, 255, 255, 0.08);
+    --border-mid:   rgba(255, 255, 255, 0.15);
+    --border-light: rgba(0, 0, 0, 0.08);
+
+    /* Accent colors */
+    --accent:        #ffffff;
+    --accent-green:  #30d158;
+    --accent-orange: #ff9f0a;
+
+    /* Gradient stops */
+    --grad-start: #080808;
+    --grad-mid:   #1a1a1a;
+    --grad-end:   #3a3a3a;
+
+    /* Typography — GT Walsheim → Plus Jakarta Sans → Inter */
+    --font:         "GT Walsheim Medium", "GT Walsheim Medium Placeholder",
+                    'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    --font-display: "GT Walsheim Medium", "GT Walsheim Medium Placeholder",
+                    'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    --font-mono:    'SF Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
