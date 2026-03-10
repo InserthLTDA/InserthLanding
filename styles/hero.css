@@ -1,14 +1,7 @@
 /* ══════════════════════════════════
-   HERO — Gradient animado + layout lateral
-   Globo 3D na direita, texto na esquerda
+   HERO — White Apple style
+   Fundo branco, globo via mix-blend-mode
 ══════════════════════════════════ */
-
-/* ── Animated gradient background ── */
-@keyframes heroGradient {
-    0%   { background-position: 0% 50%;   }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%;   }
-}
 
 @keyframes eyebrowGlowRotate {
     from { transform: translate(-50%, -50%) rotate(0deg);   }
@@ -16,15 +9,8 @@
 }
 
 @keyframes dotGlow {
-    0%, 100% {
-        box-shadow: 0 0 2px rgba(48,209,88,0.9),
-                    0 0 5px rgba(48,209,88,0.5);
-    }
-    50% {
-        box-shadow: 0 0 6px  rgba(48,209,88,1),
-                    0 0 14px rgba(48,209,88,0.6),
-                    0 0 24px rgba(48,209,88,0.2);
-    }
+    0%, 100% { box-shadow: 0 0 3px rgba(48,209,88,0.8); }
+    50%       { box-shadow: 0 0 8px rgba(48,209,88,1), 0 0 18px rgba(48,209,88,0.35); }
 }
 
 /* ── Hero section ── */
@@ -32,10 +18,10 @@
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    background: #080808;
+    background: #f5f5f7;
 }
 
-/* ── Globe — absolute, right side only ── */
+/* ── Globe — mix-blend-mode: screen makes dark bg transparent on white ── */
 .hero-globe {
     position: absolute;
     right: -5%;
@@ -43,7 +29,8 @@
     width: 62%;
     height: 100%;
     z-index: 1;
-    opacity: 0.85;
+    opacity: 0.90;
+    mix-blend-mode: screen;
 }
 
 .hero-globe iframe {
@@ -58,21 +45,21 @@
 }
 .hero-globe iframe.loaded { opacity: 1; }
 
-/* ── Directional overlay: dark left → transparent right ── */
+/* ── Directional overlay: white left → transparent right ── */
 .hero-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(to right,
-        rgba(8,8,8,0.97)   0%,
-        rgba(8,8,8,0.90)   25%,
-        rgba(8,8,8,0.60)   50%,
-        rgba(8,8,8,0.15)   70%,
-        transparent        100%);
+        rgba(245,245,247,0.98)  0%,
+        rgba(245,245,247,0.92)  28%,
+        rgba(245,245,247,0.65)  52%,
+        rgba(245,245,247,0.18)  72%,
+        transparent             100%);
     z-index: 2;
     pointer-events: none;
 }
 
-/* ── Inner layout: full-width flex container ── */
+/* ── Inner layout ── */
 .hero-inner {
     position: relative;
     z-index: 3;
@@ -93,7 +80,7 @@
     padding: 100px 0;
 }
 
-/* ── Eyebrow: "Em construção" with rotating glow border ── */
+/* ── Eyebrow pill ── */
 .hero-eyebrow-wrap {
     position: relative;
     display: inline-flex;
@@ -101,14 +88,12 @@
     margin-bottom: 28px;
     padding: 1.5px;
     overflow: hidden;
-    /* Brilho suave estático ao redor do elemento — independente da animação */
     box-shadow:
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 0 14px rgba(255,255,255,0.07),
-        0 2px 8px rgba(0,0,0,0.5);
+        0 0 0 1px rgba(0,0,0,0.07),
+        0 2px 8px rgba(0,0,0,0.07);
 }
 
-/* Borda giratória — apenas a borda, sem contaminar o interior */
+/* Subtle rotating border (dark version) */
 .hero-eyebrow-wrap::before {
     content: '';
     position: absolute;
@@ -120,9 +105,9 @@
         from var(--glow-angle),
         transparent    0deg,
         transparent    300deg,
-        rgba(255,255,255,0.55) 345deg,
-        rgba(255,255,255,0.90) 358deg,
-        rgba(255,255,255,0.55) 360deg
+        rgba(0,0,0,0.18) 345deg,
+        rgba(0,0,0,0.32) 358deg,
+        rgba(0,0,0,0.18) 360deg
     );
     animation: eyebrowGlowRotate 3s linear infinite;
     z-index: 0;
@@ -136,18 +121,15 @@
     gap: 8px;
     padding: 7px 16px;
     border-radius: 980px;
-    /* Background sólido com brilho interno estático via gradiente radial */
-    background:
-        radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.07) 0%, transparent 70%),
-        #141414;
-    color: rgba(255,255,255,0.82);
+    background: rgba(255,255,255,0.92);
+    color: rgba(0,0,0,0.68);
     font-size: 13px;
     font-weight: 500;
     letter-spacing: -0.01em;
     white-space: nowrap;
 }
 
-/* ── Green dot with subtle glow pulse ── */
+/* ── Green dot ── */
 .hero-eyebrow-dot {
     width: 6px;
     height: 6px;
@@ -157,7 +139,7 @@
     animation: dotGlow 2.2s ease-in-out infinite;
 }
 
-/* ── Title ── */
+/* ── Title — dark gradient, Apple-grade ── */
 .hero-title {
     font-family: var(--font-display);
     font-size: clamp(48px, 6.5vw, 82px);
@@ -165,21 +147,14 @@
     line-height: 1.04;
     letter-spacing: -0.03em;
     margin-bottom: 22px;
-    /* Branco com fade suave — SF Pro keynote */
-    background: linear-gradient(180deg, #ffffff 0%, #d1d1d6 100%);
+    background: linear-gradient(180deg, #1d1d1f 0%, #3a3a3c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* Accent — contraste dentro do título, mais escurecido */
 .hero-title-accent {
-    background: linear-gradient(
-        160deg,
-        #ffffff     0%,
-        #e8e8ed    45%,
-        #aeaeb2   100%
-    );
+    background: linear-gradient(160deg, #1d1d1f 0%, #3a3a3c 50%, #6e6e73 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -189,7 +164,7 @@
 .hero-subtitle {
     font-size: clamp(16px, 2vw, 19px);
     font-weight: 300;
-    color: var(--text-secondary);
+    color: #6e6e73;
     line-height: 1.65;
     max-width: 480px;
     margin-bottom: 44px;
@@ -206,16 +181,15 @@
 }
 
 /* ════════════════════════════════
-   HERO BUTTONS — Premium & Dynamic
+   HERO BUTTONS — Light theme
 ════════════════════════════════ */
 
-/* Animações compartilhadas */
 @keyframes heroDotBreath {
-    0%, 100% { opacity: 1;    transform: scale(1);    }
-    50%       { opacity: 0.6;  transform: scale(0.8); }
+    0%, 100% { opacity: 1;   transform: scale(1);    }
+    50%       { opacity: 0.6; transform: scale(0.8); }
 }
 @keyframes heroDotRing {
-    0%   { box-shadow: 0 0 0 0px  rgba(48,209,88,0.7); }
+    0%   { box-shadow: 0 0 0 0px  rgba(48,209,88,0.6); }
     70%  { box-shadow: 0 0 0 8px  rgba(48,209,88,0.0); }
     100% { box-shadow: 0 0 0 0px  rgba(48,209,88,0.0); }
 }
@@ -254,80 +228,46 @@
     transition-duration: 0.1s !important;
 }
 
-/* ──────────────────────────────
-   PRIMÁRIO — "Lista de espera"
-   Efeito metálico ultra-premium + Glare
-────────────────────────────── */
+/* ── PRIMÁRIO — dark button on white bg ── */
 .hero-btn--primary {
-    background: linear-gradient(180deg, #ffffff 0%, #f0f0f5 100%);
-    color: #080808;
+    background: linear-gradient(180deg, #1d1d1f 0%, #2c2c2e 100%);
+    color: #ffffff;
     box-shadow:
-        inset 0  1px 1px   rgba(255,255,255,1),
-        inset 0 -2px 1px   rgba(0,0,0,0.05),
-              0  4px 16px  rgba(0,0,0,0.2),
-              0  8px 32px  rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.4);
+        0  4px 16px rgba(0,0,0,0.18),
+        0  8px 32px rgba(0,0,0,0.10),
+        inset 0 1px 0 rgba(255,255,255,0.10);
+    border: none;
 }
 
-.hero-btn--primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 2px;
-    background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.1) 0deg, rgba(255,255,255,1) 180deg, rgba(255,255,255,0.1) 360deg);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: -1;
-}
-
-.hero-btn--primary:hover {
-    transform: translateY(-2px) scale(1.02);
-    background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
-    box-shadow:
-        inset 0  1px 1px   rgba(255,255,255,1),
-        inset 0 -2px 1px   rgba(0,0,0,0.02),
-              0  12px 24px rgba(0,0,0,0.3),
-              0  20px 48px rgba(255,255,255,0.12),
-              0  0    24px rgba(255,255,255,0.2);
-}
-
-.hero-btn--primary:hover::before {
-    opacity: 1;
-}
-
-/* Reflexo de luz (Shine estético) */
+/* Glare sweep on hover */
 .hero-btn__shine {
     position: absolute;
     top: 0;
     left: 0;
     width: 40%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.8),
-        transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     transform: translateX(-150%) skewX(-20deg);
     pointer-events: none;
     z-index: 2;
 }
-
 .hero-btn--primary:hover .hero-btn__shine {
     animation: sweepShine 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
-
 .hero-btn--primary:not(:hover) .hero-btn__shine {
     animation: none;
     transform: translateX(-150%) skewX(-20deg);
 }
 
-/* Ponto de status verde */
+.hero-btn--primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(180deg, #2c2c2e 0%, #3a3a3c 100%);
+    box-shadow:
+        0 8px 28px  rgba(0,0,0,0.22),
+        0 16px 48px rgba(0,0,0,0.14);
+}
+
+/* Green dot */
 .hero-btn__dot {
     position: relative;
     width: 8px;
@@ -335,10 +275,9 @@
     border-radius: 50%;
     background: #30d158;
     flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(48,209,88,0.8);
+    box-shadow: 0 0 8px rgba(48,209,88,0.7);
     animation: heroDotBreath 3s ease-in-out infinite;
 }
-/* Ring pulsante no hover do botão primário */
 .hero-btn__dot::after {
     content: '';
     position: absolute;
@@ -349,86 +288,43 @@
     animation: heroDotRing 2.5s ease-out infinite;
 }
 
-/* Ícone de seta */
+/* Arrow icon */
 .hero-btn__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: rgba(0,0,0,0.4);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                color    0.3s ease;
+    color: rgba(255,255,255,0.40);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 .hero-btn--primary:hover .hero-btn__icon {
     transform: translateX(4px);
-    color: #000000;
-}
-
-/* ──────────────────────────────
-   FANTASMA — "Conheça o OPER"
-   Glassmorphism polido blur-heavy
-────────────────────────────── */
-.hero-btn--ghost {
-    background: rgba(255,255,255,0.02);
     color: rgba(255,255,255,0.85);
+}
+
+/* ── FANTASMA — light outline on white bg ── */
+.hero-btn--ghost {
+    background: rgba(0,0,0,0.04);
+    color: rgba(0,0,0,0.72);
     padding: 0 28px;
-    box-shadow:
-              0 4px 16px rgba(0,0,0,0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.06);
+    border: 1px solid rgba(0,0,0,0.12);
+    box-shadow: none;
 }
-
-.hero-btn--ghost::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.08) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-}
-
 .hero-btn--ghost:hover {
-    background: rgba(255,255,255,0.06);
-    color: #ffffff;
+    background: rgba(0,0,0,0.07);
+    color: #1d1d1f;
+    border-color: rgba(0,0,0,0.22);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     transform: translateY(-2px) scale(1.02);
-    border-color: rgba(255,255,255,0.15);
-    box-shadow:
-              0  8px 24px rgba(0,0,0,0.3),
-              0  0   24px rgba(255,255,255,0.06);
 }
 
-.hero-btn--ghost:hover::before {
-    background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.2) 100%);
-}
-
-/* Efeito interno etéreo no ghost na área do clique (radial grad) */
-.hero-btn--ghost::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(120% 100% at 50% 120%, rgba(255,255,255,0.08) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-.hero-btn--ghost:hover::after {
-    opacity: 1;
-}
-
-/* ── Bottom fade transition ── */
+/* ── Bottom fade → white ── */
 .hero-fade-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 200px;
-    background: linear-gradient(to bottom, transparent, #080808);
+    background: linear-gradient(to bottom, transparent, #f5f5f7);
     z-index: 4;
     pointer-events: none;
 }

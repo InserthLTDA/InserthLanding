@@ -51,9 +51,9 @@
 
 /* ── MARQUEE ── */
 .marquee {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    background: var(--bg-light);
+    border-top: 1px solid rgba(0,0,0,0.07);
+    border-bottom: 1px solid rgba(0,0,0,0.07);
     overflow: hidden;
     padding: 14px 0;
 }
@@ -70,7 +70,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     padding: 0 40px;
-    color: rgba(255,255,255,0.25);
+    color: rgba(0,0,0,0.28);
 }
 
 /* ── SEÇÕES CLARAS — base ── */
@@ -199,14 +199,17 @@
 .stat-card:nth-child(4) { transition-delay: 0.24s; }
 
 /* ════════════════════════════════
-   02 — OPER (seção escura e imersiva)
+   02 — OPER (seção clara — Apple white)
 ════════════════════════════════ */
 .product {
     padding: 120px 0;
-    background: var(--bg);
-    color: var(--text);
+    background:
+        radial-gradient(ellipse 65% 60% at 85% 20%, rgba(48,209,88,0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(0,0,0,0.015) 0%, transparent 55%),
+        #f5f5f7;
+    color: var(--text-dark);
     position: relative;
-    overflow: hidden; /* Importante para os elementos de background não vazarem */
+    overflow: hidden;
 }
 
 /* Canvas de bolinhas interativas */
@@ -221,20 +224,19 @@
     animation: dotFadeIn 1.2s ease forwards;
 }
 
-/* Glow Radial Gigante que pulsa suavemente no centro/baixo (IA Core) */
+/* Glow verde sutil — mais leve no tema claro */
 .product-bg-glow {
     position: absolute;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, rgba(48,209,88,0.08) 0%, rgba(0,0,0,0) 60%);
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(48,209,88,0.06) 0%, rgba(255,255,255,0) 60%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -10%);
     pointer-events: none;
     z-index: 0;
     border-radius: 50%;
-    filter: blur(80px); /* Suaviza totalmente criando a aura */
-    animation: glowPulse 8s ease-in-out infinite alternate;
+    filter: blur(80px);
 }
 
 /* ─── Hero Header ─────────────────────────────── */
@@ -252,7 +254,7 @@
     font-weight: 400;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: var(--text-dark-secondary);
     display: block;
     margin-bottom: 24px;
 }
@@ -265,7 +267,7 @@
     letter-spacing: -0.05em;
     line-height: 0.9;
     margin-bottom: 24px;
-    color: var(--text);
+    color: var(--text-dark);
     cursor: default;
     will-change: transform;
     display: block;
@@ -275,7 +277,7 @@
 .oper-letter {
     display: inline-block;
     will-change: transform;
-    color: var(--text);
+    color: var(--text-dark);
 }
 
 .product-tagline {
@@ -283,7 +285,7 @@
     font-size: clamp(15px, 2vw, 20px);
     font-weight: 400;
     letter-spacing: -0.01em;
-    color: rgba(245, 245, 247, 0.55);
+    color: rgba(0, 0, 0, 0.42);
     margin-bottom: 14px;
     line-height: 1.4;
 }
@@ -291,7 +293,7 @@
 .product-hero-desc {
     font-size: 14px;
     line-height: 1.75;
-    color: rgba(245, 245, 247, 0.35);
+    color: rgba(0, 0, 0, 0.30);
     max-width: 420px;
     margin: 0 auto;
 }
@@ -305,12 +307,10 @@
     z-index: 2;
 }
 
-/* Base card */
+/* Base card — white Apple-style */
 .bento-card {
-    background: linear-gradient(145deg,
-        rgba(255, 255, 255, 0.055) 0%,
-        rgba(255, 255, 255, 0.02)  100%);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 28px 28px 26px;
     position: relative;
@@ -318,23 +318,23 @@
     display: flex;
     flex-direction: column;
     min-height: 210px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
     transition:
-        transform        0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        border-color     0.32s,
-        background       0.32s;
-    /* mouse-follow spotlight via CSS custom props */
+        transform    0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.32s,
+        box-shadow   0.32s;
     --mx: 50%;
     --my: 50%;
 }
 
-/* Mouse-follow radial spotlight */
+/* Mouse-follow radial spotlight (dark on white) */
 .bento-card::before {
     content: '';
     position: absolute;
     inset: 0;
     background: radial-gradient(
         380px circle at var(--mx) var(--my),
-        rgba(255, 255, 255, 0.045),
+        rgba(0, 0, 0, 0.025),
         transparent 70%
     );
     border-radius: inherit;
@@ -345,10 +345,8 @@
 
 .bento-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.13);
-    background: linear-gradient(145deg,
-        rgba(255, 255, 255, 0.075) 0%,
-        rgba(255, 255, 255, 0.03)  100%);
+    border-color: rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
 }
 
 .bento-card:hover::before { opacity: 1; }
@@ -374,13 +372,13 @@
     width: 40px;
     height: 40px;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(245, 245, 247, 0.5);
+    color: rgba(0, 0, 0, 0.35);
     margin-bottom: 20px;
     transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
@@ -388,9 +386,9 @@
 .bento-full .bento-icon { margin-bottom: 0; }
 
 .bento-card:hover .bento-icon {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: var(--text);
+    background: #ebebed;
+    border-color: rgba(0, 0, 0, 0.10);
+    color: #1d1d1f;
 }
 
 /* Badge tag (wide card only) */
@@ -411,7 +409,7 @@
     font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: rgba(245, 245, 247, 0.92);
+    color: #1d1d1f;
     margin-bottom: 8px;
     line-height: 1.25;
     margin-top: auto; /* icon at top, title+desc at bottom */
@@ -421,7 +419,7 @@
 .bento-desc {
     font-size: 13px;
     line-height: 1.65;
-    color: rgba(245, 245, 247, 0.38);
+    color: rgba(0, 0, 0, 0.42);
 }
 
 /* Wide card subtle green glow in corner */
@@ -451,7 +449,7 @@
     font-size: clamp(36px, 4vw, 52px);
     font-weight: 700;
     letter-spacing: -0.04em;
-    color: rgba(245, 245, 247, 0.12);
+    color: rgba(0, 0, 0, 0.10);
     line-height: 1;
     flex-shrink: 0;
     transition: color 0.3s;
@@ -466,7 +464,7 @@
 }
 
 .bento-full:hover .bento-full-stat {
-    color: rgba(245, 245, 247, 0.22);
+    color: rgba(0, 0, 0, 0.18);
 }
 
 /* ════════════════════════════════
@@ -589,15 +587,15 @@
 ════════════════════════════════ */
 .niches {
     padding: 120px 0;
-    color: var(--text);
+    color: var(--text-dark);
     background:
-        radial-gradient(ellipse 55% 50% at 6% 96%, rgba(48,209,88,0.045) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 94% 5%, rgba(255,255,255,0.012) 0%, transparent 50%),
-        var(--bg);
+        radial-gradient(ellipse 55% 50% at 8% 95%, rgba(48,209,88,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 45% at 95% 5%, rgba(0,0,0,0.015) 0%, transparent 50%),
+        #ffffff;
 }
 
-.niches .section-label   { color: var(--text-secondary); }
-.niches .section-heading { color: var(--text); }
+.niches .section-label   { color: var(--text-dark-secondary); }
+.niches .section-heading { color: var(--text-dark); }
 
 /* Grid de cards individuais — sem separadores 1px */
 .niches-grid {
@@ -608,17 +606,16 @@
 }
 
 .niche-card {
-    background: linear-gradient(145deg,
-        rgba(255, 255, 255, 0.055) 0%,
-        rgba(255, 255, 255, 0.02)  100%);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 18px;
     padding: 28px 18px 24px;
     text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
     transition:
         transform    0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94),
         border-color 0.30s,
-        background   0.30s;
+        box-shadow   0.30s;
     position: relative;
     overflow: hidden;
     cursor: default;
@@ -626,14 +623,14 @@
     --my: 50%;
 }
 
-/* Mouse-follow spotlight */
+/* Mouse-follow spotlight (dark on white) */
 .niche-card::before {
     content: '';
     position: absolute;
     inset: 0;
     background: radial-gradient(
         260px circle at var(--mx) var(--my),
-        rgba(255, 255, 255, 0.04),
+        rgba(0, 0, 0, 0.025),
         transparent 70%
     );
     border-radius: inherit;
@@ -644,14 +641,12 @@
 
 .niche-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.13);
-    background: linear-gradient(145deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 .niche-card:hover::before { opacity: 1; }
 
-/* Ícone como badge — igual ao bento grid */
+/* Ícone como badge */
 .niche-icon {
     display: flex;
     align-items: center;
@@ -659,17 +654,17 @@
     width: 40px;
     height: 40px;
     margin: 0 auto 16px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 11px;
-    color: rgba(245, 245, 247, 0.5);
+    color: rgba(0, 0, 0, 0.35);
     transition: background 0.30s, color 0.30s, border-color 0.30s;
 }
 
 .niche-card:hover .niche-icon {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: var(--text);
+    background: #ebebed;
+    border-color: rgba(0, 0, 0, 0.10);
+    color: #1d1d1f;
 }
 
 .niche-card h4 {
@@ -678,48 +673,47 @@
     font-weight: 600;
     letter-spacing: -0.02em;
     margin-bottom: 6px;
-    color: rgba(245, 245, 247, 0.9);
+    color: #1d1d1f;
     line-height: 1.25;
 }
 
 .niche-card p {
     font-size: 12px;
-    color: rgba(245, 245, 247, 0.35);
+    color: rgba(0, 0, 0, 0.45);
     line-height: 1.55;
 }
 
 /* ════════════════════════════════
-   05 — PREÇOS (dark — Inserth-branded)
+   05 — PREÇOS (light — Apple white + dark Pro card)
 ════════════════════════════════ */
 .pricing {
     padding: 140px 0;
     background:
-        radial-gradient(ellipse 75% 65% at 95% 8%, rgba(48,209,88,0.065) 0%, transparent 55%),
-        radial-gradient(ellipse 55% 50% at 5% 92%, rgba(255,255,255,0.012) 0%, transparent 55%),
-        var(--bg);
-    color: var(--text);
+        radial-gradient(ellipse 70% 60% at 96% 8%, rgba(48,209,88,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 4% 92%, rgba(0,0,0,0.015) 0%, transparent 55%),
+        #f5f5f7;
+    color: var(--text-dark);
     position: relative;
     overflow: hidden;
 }
 
-/* Section text overrides for dark background */
-.pricing .section-label   { color: var(--text-secondary); }
-.pricing .section-heading { color: var(--text); }
-.pricing .section-desc    { color: rgba(245, 245, 247, 0.42); }
+/* Section text */
+.pricing .section-label   { color: var(--text-dark-secondary); }
+.pricing .section-heading { color: var(--text-dark); }
+.pricing .section-desc    { color: rgba(0, 0, 0, 0.50); }
 
-/* Background glow layer (decorative arc) */
+/* Background glow layer (very subtle on light bg) */
 .pricing-bg-glow {
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(48,209,88,0.08) 0%, transparent 65%);
-    top: -140px;
-    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(48,209,88,0.06) 0%, transparent 65%);
+    top: -100px;
+    right: -80px;
     pointer-events: none;
     z-index: 0;
     border-radius: 50%;
     filter: blur(80px);
-    animation: glowPulse 9s ease-in-out infinite alternate;
 }
 
 .pricing-header {
@@ -740,18 +734,17 @@
     z-index: 2;
 }
 
-/* ── Base card: glass-morphism dark ── */
+/* ── Base card: clean white Apple-style ── */
 .pricing-card {
-    background: linear-gradient(145deg,
-        rgba(255, 255, 255, 0.055) 0%,
-        rgba(255, 255, 255, 0.018) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 22px;
     padding: 36px 28px 32px;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
     transition:
         transform    0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94),
         border-color 0.32s,
@@ -760,14 +753,14 @@
     --my: 50%;
 }
 
-/* Mouse-follow radial spotlight */
+/* Mouse-follow radial spotlight (dark on white) */
 .pricing-card::before {
     content: '';
     position: absolute;
     inset: 0;
     background: radial-gradient(
         420px circle at var(--mx) var(--my),
-        rgba(255, 255, 255, 0.04),
+        rgba(0, 0, 0, 0.025),
         transparent 70%
     );
     border-radius: inherit;
@@ -778,37 +771,33 @@
 
 .pricing-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+    border-color: rgba(0, 0, 0, 0.10);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.09), 0 3px 8px rgba(0,0,0,0.04);
 }
 .pricing-card:hover::before { opacity: 1; }
 
-/* ── Featured card (Pro) — green accent glow ── */
+/* ── Featured card (Pro) — dark #1d1d1f Apple contrast ── */
 .pricing-featured {
-    background: linear-gradient(145deg,
-        rgba(48, 209, 88, 0.10) 0%,
-        rgba(255, 255, 255, 0.042) 45%,
-        rgba(255, 255, 255, 0.010) 100%);
-    border-color: rgba(48, 209, 88, 0.28);
+    background: #1d1d1f;
+    border-color: transparent;
     box-shadow:
-        0 0 0 1px rgba(48, 209, 88, 0.10),
-        0 0 80px rgba(48, 209, 88, 0.08),
-        0 24px 64px rgba(0, 0, 0, 0.40);
+        0 16px 48px rgba(0,0,0,0.22),
+        0 4px 12px rgba(0,0,0,0.12);
+    color: #f5f5f7;
 }
 
 .pricing-featured:hover {
-    border-color: rgba(48, 209, 88, 0.45);
+    border-color: rgba(255,255,255,0.12);
     box-shadow:
-        0 0 0 1px rgba(48, 209, 88, 0.18),
-        0 0 100px rgba(48, 209, 88, 0.12),
-        0 28px 72px rgba(0, 0, 0, 0.50);
+        0 20px 60px rgba(0,0,0,0.28),
+        0 6px 16px rgba(0,0,0,0.16);
 }
 
-/* Green-tinted spotlight for featured */
+/* Light spotlight on dark featured card */
 .pricing-featured::before {
     background: radial-gradient(
         420px circle at var(--mx) var(--my),
-        rgba(48, 209, 88, 0.07),
+        rgba(255, 255, 255, 0.045),
         transparent 70%
     );
 }
@@ -837,9 +826,10 @@
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(245, 245, 247, 0.35);
+    color: rgba(0, 0, 0, 0.38);
     margin-bottom: 6px;
 }
+.pricing-featured .pricing-tier { color: rgba(255,255,255,0.38); }
 
 /* Product name */
 .pricing-product {
@@ -847,10 +837,11 @@
     font-size: 26px;
     font-weight: 700;
     letter-spacing: -0.03em;
-    color: var(--text);
+    color: #1d1d1f;
     margin-bottom: 22px;
     line-height: 1;
 }
+.pricing-featured .pricing-product { color: #ffffff; }
 
 /* Price row */
 .pricing-price-wrap {
@@ -864,35 +855,39 @@
     font-family: var(--font-display);
     font-size: 20px;
     font-weight: 500;
-    color: rgba(245, 245, 247, 0.45);
+    color: rgba(0, 0, 0, 0.38);
     letter-spacing: -0.02em;
     align-self: flex-start;
     margin-top: 10px;
 }
+.pricing-featured .pricing-currency { color: rgba(255,255,255,0.40); }
 
 .pricing-amount {
     font-family: var(--font-display);
     font-size: clamp(44px, 4.5vw, 54px);
     font-weight: 700;
     letter-spacing: -0.045em;
-    color: var(--text);
+    color: #1d1d1f;
     line-height: 1;
 }
+.pricing-featured .pricing-amount { color: #ffffff; }
 
 .pricing-period {
     font-size: 14px;
     font-weight: 400;
-    color: rgba(245, 245, 247, 0.30);
+    color: rgba(0, 0, 0, 0.30);
     margin-left: 4px;
 }
+.pricing-featured .pricing-period { color: rgba(255,255,255,0.30); }
 
 /* Short description */
 .pricing-desc {
     font-size: 13px;
-    color: rgba(245, 245, 247, 0.38);
+    color: rgba(0, 0, 0, 0.42);
     line-height: 1.55;
     margin-bottom: 28px;
 }
+.pricing-featured .pricing-desc { color: rgba(255,255,255,0.42); }
 
 /* ── Feature list ── */
 .pricing-features {
@@ -909,14 +904,14 @@
     align-items: center;
     gap: 10px;
     font-size: 13.5px;
-    color: rgba(245, 245, 247, 0.60);
+    color: rgba(0, 0, 0, 0.62);
     padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     line-height: 1.4;
 }
 .pricing-features li:last-child { border-bottom: none; }
 
-/* Checkmark circle */
+/* Checkmark circle — dark on light bg */
 .pricing-features li::before {
     content: '✓';
     width: 18px;
@@ -927,22 +922,22 @@
     justify-content: center;
     font-size: 9px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: rgba(0, 0, 0, 0.28);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: 50%;
 }
 
-/* Featured card: green checkmarks */
+/* Featured dark card: brighter text + green checkmarks */
 .pricing-featured .pricing-features li {
-    color: rgba(245, 245, 247, 0.72);
-    border-bottom-color: rgba(48, 209, 88, 0.07);
+    color: rgba(255, 255, 255, 0.70);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 .pricing-featured .pricing-features li::before {
     content: '✓';
     color: var(--accent-green);
-    background: rgba(48, 209, 88, 0.10);
-    border-color: rgba(48, 209, 88, 0.22);
+    background: rgba(48, 209, 88, 0.12);
+    border-color: rgba(48, 209, 88, 0.25);
 }
 
 /* ── CTA Buttons ── */
@@ -957,13 +952,13 @@
     letter-spacing: -0.01em;
     transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     background: transparent;
-    color: rgba(245, 245, 247, 0.48);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(0, 0, 0, 0.52);
+    border: 1px solid rgba(0, 0, 0, 0.14);
 }
 .pricing-btn:hover {
-    color: var(--text);
-    border-color: rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.05);
+    color: #1d1d1f;
+    border-color: rgba(0, 0, 0, 0.28);
+    background: rgba(0, 0, 0, 0.03);
 }
 
 /* Green CTA — Pro plan */
@@ -981,13 +976,13 @@
 }
 
 /* ════════════════════════════════
-   CTA (seção escura) — redesign sofisticado
+   CTA (seção escura — contraste final)
 ════════════════════════════════ */
 .cta {
     padding: 180px 0;
     text-align: center;
-    background: var(--bg);
-    color: var(--text);
+    background: #1d1d1f;
+    color: #f5f5f7;
     position: relative;
     overflow: hidden;
 }
@@ -1129,8 +1124,8 @@
    FOOTER — Professional layout
 ════════════════════════════════ */
 .footer {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
+    background: #1d1d1f;
+    border-top: 1px solid rgba(255,255,255,0.08);
     padding: 0;
     color: var(--text-secondary);
     position: relative;
@@ -1304,4 +1299,42 @@
 .reveal-scale {
     opacity: 0;
     transform: scale(0.95);
+}
+
+/* ════════════════════════════════
+   PERFORMANCE — Mobile & reduced motion
+════════════════════════════════ */
+
+/* Disable heavy CSS animations on mobile */
+@media (max-width: 768px) {
+    .product-bg-glow,
+    .pricing-bg-glow,
+    .cta-glow,
+    .bento-glow          { display: none; }
+
+    /* Simplify nav blur on mobile (expensive) */
+    .nav {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255,255,255,0.96) !important;
+    }
+
+    /* Disable globe iframe on mobile — too heavy */
+    .hero-globe { display: none; }
+
+    /* Simpler hero overlay on mobile */
+    .hero-overlay { background: rgba(245,245,247,0.88); }
+}
+
+/* Respect system preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }

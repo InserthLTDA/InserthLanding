@@ -59,31 +59,32 @@ function initScrollAnimations() {
 
     /* ────────────────────────────────
        REVEAL ANIMATIONS — suaves, Apple-grade
+       Sem filter:blur (GPU-intensivo em mobile)
     ──────────────────────────────── */
     const revealConfig = [
         {
             selector: '.reveal:not(.about-quote)',
-            from:     { opacity: 0, y: 32, filter: 'blur(6px)' },
+            from:     { opacity: 0, y: 32 },
             defaults: { duration: 1.0, ease: 'power4.out' }
         },
         {
             selector: '.reveal-left',
-            from:     { opacity: 0, x: -36, filter: 'blur(4px)' },
+            from:     { opacity: 0, x: -36 },
             defaults: { duration: 0.95, ease: 'power3.out' }
         },
         {
             selector: '.reveal-right',
-            from:     { opacity: 0, x: 36, filter: 'blur(4px)' },
+            from:     { opacity: 0, x: 36 },
             defaults: { duration: 0.95, ease: 'power3.out' }
         },
         {
             selector: '.reveal-scale',
-            from:     { opacity: 0, scale: 0.92, y: 20, filter: 'blur(6px)' },
+            from:     { opacity: 0, scale: 0.92, y: 20 },
             defaults: { duration: 0.85, ease: 'power3.out' }
         },
         {
             selector: '.about-quote.reveal',
-            from:     { opacity: 0, x: -24, filter: 'blur(3px)' },
+            from:     { opacity: 0, x: -24 },
             defaults: { duration: 0.90, ease: 'power3.out' }
         },
     ];
@@ -95,7 +96,6 @@ function initScrollAnimations() {
                 opacity: 1,
                 x: 0, y: 0,
                 scale: 1,
-                filter: 'blur(0px)',
                 scrollTrigger: {
                     trigger: el,
                     start: 'top 88%',
@@ -154,9 +154,9 @@ function initScrollAnimations() {
        STAGGER: Stat Cards (Sobre)
     ──────────────────────────────── */
     gsap.fromTo('.about-stats .stat-card',
-        { opacity: 0, y: 28, filter: 'blur(5px)' },
+        { opacity: 0, y: 28 },
         {
-            opacity: 1, y: 0, filter: 'blur(0px)',
+            opacity: 1, y: 0,
             duration: 0.75,
             stagger: 0.10,
             ease: 'power3.out',
@@ -195,6 +195,15 @@ function initScrollAnimations() {
         });
     });
 
+    /* Mouse-follow spotlight nos pricing cards */
+    document.querySelectorAll('.pricing-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            card.style.setProperty('--my', (e.clientY - r.top)  + 'px');
+        });
+    });
+
     /* ────────────────────────────────
        STAGGER: Advantage Cards (Mercado)
     ──────────────────────────────── */
@@ -214,18 +223,33 @@ function initScrollAnimations() {
     );
 
     /* ────────────────────────────────
-       STAGGER: Pricing Cards
+       STAGGER: Pricing Cards — clean reveal
     ──────────────────────────────── */
     gsap.fromTo('.pricing-card',
-        { opacity: 0, y: 40, filter: 'blur(5px)' },
+        { opacity: 0, y: 36, scale: 0.97 },
         {
-            opacity: 1, y: 0, filter: 'blur(0px)',
-            duration: 0.80,
-            stagger: 0.14,
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.75,
+            stagger: { each: 0.12, from: 'start' },
             ease: 'power3.out',
             scrollTrigger: {
                 trigger: '.pricing-grid',
                 start: 'top 84%',
+                toggleActions: 'play none none none',
+            },
+        }
+    );
+
+    /* Pricing bg glow — expand on enter */
+    gsap.fromTo('.pricing-bg-glow',
+        { scale: 0.6, opacity: 0 },
+        {
+            scale: 1, opacity: 1,
+            duration: 1.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.pricing',
+                start: 'top 80%',
                 toggleActions: 'play none none none',
             },
         }
@@ -255,9 +279,9 @@ function initScrollAnimations() {
     ──────────────────────────────── */
     gsap.utils.toArray('.section-label').forEach(el => {
         gsap.fromTo(el,
-            { opacity: 0, x: -12, filter: 'blur(3px)' },
+            { opacity: 0, x: -12 },
             {
-                opacity: 1, x: 0, filter: 'blur(0px)',
+                opacity: 1, x: 0,
                 duration: 0.70,
                 ease: 'power3.out',
                 scrollTrigger: {
@@ -325,9 +349,9 @@ function initScrollAnimations() {
        FOOTER: revelação elegante
     ──────────────────────────────── */
     gsap.fromTo('.footer-brand',
-        { opacity: 0, x: -24, filter: 'blur(4px)' },
+        { opacity: 0, x: -24 },
         {
-            opacity: 1, x: 0, filter: 'blur(0px)',
+            opacity: 1, x: 0,
             duration: 0.90,
             ease: 'power3.out',
             scrollTrigger: {
@@ -339,9 +363,9 @@ function initScrollAnimations() {
     );
 
     gsap.fromTo('.footer-nav-col',
-        { opacity: 0, y: 16, filter: 'blur(3px)' },
+        { opacity: 0, y: 16 },
         {
-            opacity: 1, y: 0, filter: 'blur(0px)',
+            opacity: 1, y: 0,
             duration: 0.70,
             stagger: 0.10,
             ease: 'power3.out',
@@ -392,7 +416,7 @@ function initScrollAnimations() {
 
     const operLetters = gsap.utils.toArray('.oper-letter');
     if (operLetters.length) {
-        /* Entrada limpa: letras sobem juntas com leve stagger — sem blur pesado, sem float */
+        /* Entrada limpa: letras sobem juntas com leve stagger */
         gsap.fromTo(operLetters,
             { opacity: 0, y: 28 },
             {
@@ -438,13 +462,13 @@ function initScrollAnimations() {
     });
 
     /* ────────────────────────────────
-       SECTION HEADINGS: fade + blur global
+       SECTION HEADINGS: fade global
     ──────────────────────────────── */
     gsap.utils.toArray('.section-heading').forEach(el => {
         gsap.fromTo(el,
-            { opacity: 0, y: 20, filter: 'blur(4px)' },
+            { opacity: 0, y: 20 },
             {
-                opacity: 1, y: 0, filter: 'blur(0px)',
+                opacity: 1, y: 0,
                 duration: 0.85,
                 ease: 'power3.out',
                 scrollTrigger: {
@@ -530,10 +554,17 @@ function initOperText() {
 /* ══════════════════════════════════
    OPER DOTS — Canvas de bolinhas interativas
    Reage à posição do mouse (repulsão suave).
+   Desabilitado em mobile para performance.
 ══════════════════════════════════ */
 function initOperDots() {
     const canvas  = document.getElementById('oper-dots-canvas');
     if (!canvas) return;
+
+    /* Desabilita canvas em mobile — muito pesado */
+    if (window.innerWidth < 768) {
+        canvas.style.display = 'none';
+        return;
+    }
 
     const ctx     = canvas.getContext('2d');
     const section = document.querySelector('.product');
@@ -558,7 +589,7 @@ function initOperDots() {
         const n = dotCount();
         dots = [];
         for (let i = 0; i < n; i++) {
-            const isFocal  = Math.random() < 0.10;   /* 10% maiores e mais brilhantes */
+            const isFocal  = Math.random() < 0.10;   /* 10% maiores e mais visíveis */
             const isAccent = Math.random() < 0.05;   /* 5% verde (accent) */
             dots.push({
                 x:  Math.random() * canvas.width,
@@ -600,12 +631,12 @@ function initOperDots() {
             if (d.y < 0)             { d.y = 0;             d.vy =  Math.abs(d.vy); }
             if (d.y > canvas.height) { d.y = canvas.height; d.vy = -Math.abs(d.vy); }
 
-            /* Pinta ponto */
+            /* Pinta ponto — escuro sobre fundo branco */
             ctx.beginPath();
             ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
             ctx.fillStyle = d.isAccent
                 ? `rgba(48,209,88,${d.o})`
-                : `rgba(255,255,255,${d.o})`;
+                : `rgba(0,0,0,${d.o * 0.55})`;
             ctx.fill();
         });
 
