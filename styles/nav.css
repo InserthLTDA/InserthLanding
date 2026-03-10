@@ -19,14 +19,27 @@
     width: 100%;
     z-index: 1000;
     height: 52px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255,255,255,0.80);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-    transition: background 0.4s ease;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.65),
+        rgba(255,255,255,0.35)
+    );
+
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        0 8px 30px rgba(0,0,0,0.08);
+
+    transition: all 0.4s ease;
 }
 
 .nav-inner {
@@ -81,6 +94,8 @@
     align-items: center;
     padding: 1.5px;
     border-radius: 980px;
+    border: none;
+    font-family: inherit;
     background: linear-gradient(
         135deg,
         rgba(0,0,0,0.28) 0%,

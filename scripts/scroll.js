@@ -58,44 +58,41 @@ function initScrollAnimations() {
     });
 
     /* ────────────────────────────────
-       REVEAL ANIMATIONS — suaves, Apple-grade
-       Sem filter:blur (GPU-intensivo em mobile)
+       REVEAL ANIMATIONS — Apple-grade
+       Sem filter:blur. clipPath "rise from below" nos .reveal básicos.
     ──────────────────────────────── */
     const revealConfig = [
         {
             selector: '.reveal:not(.about-quote)',
-            from:     { opacity: 0, y: 32 },
-            defaults: { duration: 1.0, ease: 'power4.out' }
+            from:     { opacity: 0, y: 32, clipPath: 'inset(110% 0 0 0)' },
+            to:       { opacity: 1, y: 0,  clipPath: 'inset(0% 0 0 0)', duration: 0.95, ease: 'expo.out' }
         },
         {
             selector: '.reveal-left',
-            from:     { opacity: 0, x: -36 },
-            defaults: { duration: 0.95, ease: 'power3.out' }
+            from:     { opacity: 0, x: -40 },
+            to:       { opacity: 1, x: 0,   duration: 0.90, ease: 'expo.out' }
         },
         {
             selector: '.reveal-right',
-            from:     { opacity: 0, x: 36 },
-            defaults: { duration: 0.95, ease: 'power3.out' }
+            from:     { opacity: 0, x: 40 },
+            to:       { opacity: 1, x: 0,   duration: 0.90, ease: 'expo.out' }
         },
         {
             selector: '.reveal-scale',
-            from:     { opacity: 0, scale: 0.92, y: 20 },
-            defaults: { duration: 0.85, ease: 'power3.out' }
+            from:     { opacity: 0, scale: 0.90, y: 24 },
+            to:       { opacity: 1, scale: 1, y: 0, duration: 0.85, ease: 'expo.out' }
         },
         {
             selector: '.about-quote.reveal',
-            from:     { opacity: 0, x: -24 },
-            defaults: { duration: 0.90, ease: 'power3.out' }
+            from:     { opacity: 0, x: -28 },
+            to:       { opacity: 1, x: 0,   duration: 0.90, ease: 'expo.out' }
         },
     ];
 
-    revealConfig.forEach(({ selector, from, defaults }) => {
+    revealConfig.forEach(({ selector, from, to }) => {
         gsap.utils.toArray(selector).forEach(el => {
             gsap.fromTo(el, from, {
-                ...defaults,
-                opacity: 1,
-                x: 0, y: 0,
-                scale: 1,
+                ...to,
                 scrollTrigger: {
                     trigger: el,
                     start: 'top 88%',
@@ -223,15 +220,15 @@ function initScrollAnimations() {
     );
 
     /* ────────────────────────────────
-       STAGGER: Pricing Cards — clean reveal
+       STAGGER: Pricing Cards — from center (destaque no Pro)
     ──────────────────────────────── */
     gsap.fromTo('.pricing-card',
-        { opacity: 0, y: 36, scale: 0.97 },
+        { opacity: 0, y: 40, scale: 0.96 },
         {
             opacity: 1, y: 0, scale: 1,
-            duration: 0.75,
-            stagger: { each: 0.12, from: 'start' },
-            ease: 'power3.out',
+            duration: 0.80,
+            stagger: { each: 0.13, from: 'center' },
+            ease: 'expo.out',
             scrollTrigger: {
                 trigger: '.pricing-grid',
                 start: 'top 84%',
@@ -275,15 +272,15 @@ function initScrollAnimations() {
     }
 
     /* ────────────────────────────────
-       SECTION LABEL: micro-reveal com delay
+       SECTION LABEL: fade-in desde a esquerda
     ──────────────────────────────── */
     gsap.utils.toArray('.section-label').forEach(el => {
         gsap.fromTo(el,
-            { opacity: 0, x: -12 },
+            { opacity: 0, x: -16 },
             {
                 opacity: 1, x: 0,
-                duration: 0.70,
-                ease: 'power3.out',
+                duration: 0.65,
+                ease: 'expo.out',
                 scrollTrigger: {
                     trigger: el,
                     start: 'top 92%',
@@ -328,15 +325,15 @@ function initScrollAnimations() {
     }
 
     /* ────────────────────────────────
-       MARKET NUMBERS: stagger limpo
+       MARKET NUMBERS: scale + stagger
     ──────────────────────────────── */
     gsap.fromTo('.market-stat',
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 24, scale: 0.94 },
         {
-            opacity: 1, y: 0,
-            duration: 0.60,
-            stagger: { each: 0.08, from: 'start' },
-            ease: 'power3.out',
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.65,
+            stagger: { each: 0.09, from: 'start' },
+            ease: 'expo.out',
             scrollTrigger: {
                 trigger: '.market-numbers',
                 start: 'top 86%',
@@ -462,15 +459,17 @@ function initScrollAnimations() {
     });
 
     /* ────────────────────────────────
-       SECTION HEADINGS: fade global
+       SECTION HEADINGS: clipPath "rise from below" — efeito Apple
     ──────────────────────────────── */
     gsap.utils.toArray('.section-heading').forEach(el => {
         gsap.fromTo(el,
-            { opacity: 0, y: 20 },
+            { opacity: 0, y: 28, clipPath: 'inset(110% 0 0 0)' },
             {
-                opacity: 1, y: 0,
-                duration: 0.85,
-                ease: 'power3.out',
+                opacity:  1,
+                y:        0,
+                clipPath: 'inset(0% 0 0 0)',
+                duration: 0.90,
+                ease:     'expo.out',
                 scrollTrigger: {
                     trigger: el,
                     start: 'top 88%',

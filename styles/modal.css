@@ -1,0 +1,265 @@
+/* ══════════════════════════════════
+   MODAL — Lista de espera
+   Funcional: coleta nome + email,
+   salva em localStorage, exibe sucesso.
+══════════════════════════════════ */
+
+/* ── Overlay ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    pointer-events: none;
+
+    transition:
+        background 0.40s ease,
+        backdrop-filter 0.40s ease;
+}
+
+.modal-overlay.is-open {
+    background: rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    pointer-events: all;
+}
+
+/* ── Card ── */
+.modal-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 28px;
+    padding: 44px 40px 40px;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    box-shadow:
+        0 32px 80px rgba(0, 0, 0, 0.18),
+        0  8px 24px rgba(0, 0, 0, 0.10),
+        0  2px  6px rgba(0, 0, 0, 0.06);
+
+    transform: translateY(24px) scale(0.96);
+    opacity: 0;
+    transition:
+        transform 0.50s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity   0.40s ease;
+}
+
+.modal-overlay.is-open .modal-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Close button */
+.modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.40);
+    transition: background 0.20s ease, color 0.20s ease, transform 0.20s ease;
+}
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.09);
+    color: rgba(0, 0, 0, 0.75);
+    transform: scale(1.08);
+}
+.modal-close:active { transform: scale(0.94); }
+
+/* ── Header ── */
+.modal-logo {
+    height: 26px;
+    width: auto;
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0.85;
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #1d1d1f;
+    margin-bottom: 6px;
+    line-height: 1.15;
+}
+
+.modal-subtitle {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.48);
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+}
+
+/* ── Form ── */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-form input {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #fafafa;
+    font-family: var(--font);
+    font-size: 14px;
+    color: #1d1d1f;
+    outline: none;
+    transition: border-color 0.20s ease, box-shadow 0.20s ease, background 0.20s ease;
+    -webkit-appearance: none;
+}
+.modal-form input::placeholder { color: rgba(0, 0, 0, 0.32); }
+.modal-form input:focus {
+    border-color: rgba(0, 0, 0, 0.30);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+.modal-form input.error {
+    border-color: rgba(255, 59, 48, 0.60);
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.10);
+}
+
+/* Submit button */
+.modal-submit {
+    margin-top: 6px;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 980px;
+    border: none;
+    background: #1d1d1f;
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease, background 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.modal-submit:hover {
+    background: #2c2c2e;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.20);
+}
+.modal-submit:active {
+    transform: scale(0.98);
+    transition-duration: 0.10s;
+}
+.modal-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loading spinner inside button */
+.modal-submit.loading .modal-submit-label { opacity: 0; }
+.modal-submit.loading::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: modalSpinner 0.7s linear infinite;
+}
+
+@keyframes modalSpinner {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.modal-note {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.30);
+    margin-top: 10px;
+    letter-spacing: 0.01em;
+    font-family: var(--font-mono);
+}
+
+/* ── Success State ── */
+.modal-success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 0 8px;
+    gap: 16px;
+}
+
+.modal-success.is-visible { display: flex; }
+
+.modal-success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(48, 209, 88, 0.10);
+    border: 1px solid rgba(48, 209, 88, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: successPop 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes successPop {
+    from { transform: scale(0.6); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.modal-success-icon svg { color: #30d158; }
+
+.modal-success-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+}
+
+.modal-success-desc {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.52);
+    line-height: 1.55;
+    max-width: 300px;
+}
+
+.modal-success-close {
+    margin-top: 8px;
+    padding: 11px 28px;
+    border-radius: 980px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: transparent;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    transition: background 0.20s ease, border-color 0.20s ease;
+}
+.modal-success-close:hover {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.22);
+}

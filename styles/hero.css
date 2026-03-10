@@ -21,6 +21,25 @@
     background: #f5f5f7;
 }
 
+/* Dark nebula on the right — gives mix-blend-mode:screen a dark surface to
+   blend against so the globe appears. On the white left (text area) the globe
+   stays invisible (screen on white = white). The hero-overlay handles the
+   left-to-transparent fade so text always reads cleanly. */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 62% 130% at 75% 90%,
+        rgba(0, 0, 0, 0.93) 0%,
+        rgba(0, 0, 0, 0.52) 38%,
+        rgba(0, 0, 0, 0.32) 58%,
+        transparent          100%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
 /* ── Globe — mix-blend-mode: screen makes dark bg transparent on white ── */
 .hero-globe {
     position: absolute;
@@ -207,6 +226,7 @@
     padding: 0 28px 0 24px;
     height: 54px;
     border-radius: 980px;
+    border: none;
     font-family: var(--font);
     font-size: 15px;
     font-weight: 600;

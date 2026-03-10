@@ -191,38 +191,47 @@
        REVELAR CONTEÚDO
     ══════════════════ */
     function showMainContent() {
-        loaderContainer.style.display   = 'none';
-        mainContent.style.pointerEvents = 'all';
-        mainContent.style.opacity       = '1';
+        loaderContainer.style.display = 'none';
 
-        // Animações de entrada do hero via CSS transitions — blur + fade suave
+        /* ── Seletores do hero em ordem de aparecimento ── */
         const heroEls = [
             '.hero-eyebrow-wrap',
             '.hero-title',
             '.hero-subtitle',
             '.hero-btn--primary',
-            '.hero-btn--ghost'
+            '.hero-btn--ghost',
         ];
+
+        /* Congela hero elements em invisible ANTES de revelar o main-content
+           (evita flash de conteúdo não-animado) */
+        heroEls.forEach(sel => {
+            const el = document.querySelector(sel);
+            if (!el) return;
+            gsap.set(el, { opacity: 0, y: 32, clipPath: 'inset(110% 0 0 0)' });
+        });
+
+        /* Agora revela o container */
+        mainContent.style.pointerEvents = 'all';
+        mainContent.style.opacity       = '1';
+
+        /* ── Entrada: "rise from below" — sem blur, clipPath + y ── */
         heroEls.forEach((sel, i) => {
             const el = document.querySelector(sel);
             if (!el) return;
-            el.style.transition = 'none';
-            el.style.opacity    = '0';
-            el.style.transform  = 'translateY(20px)';
-            el.style.filter     = 'blur(6px)';
-            setTimeout(() => {
-                el.style.transition      = `opacity 1.0s cubic-bezier(0.16,1,0.3,1), transform 1.0s cubic-bezier(0.16,1,0.3,1), filter 1.0s cubic-bezier(0.16,1,0.3,1)`;
-                el.style.transitionDelay = (i * 0.13) + 's';
-                el.style.opacity         = '1';
-                el.style.transform       = 'translateY(0)';
-                el.style.filter          = 'blur(0px)';
-            }, 60);
+            gsap.to(el, {
+                opacity:  1,
+                y:        0,
+                clipPath: 'inset(0% 0 0 0)',
+                duration: 1.05,
+                ease:     'expo.out',
+                delay:    0.06 + i * 0.11,
+            });
         });
 
-        // Carrega o globo após o preloader (não bloqueia o main thread durante a animação)
+        /* Carrega o globo após o preloader */
         loadGlobe();
 
-        // Inicializa scroll animations (GSAP usado apenas aqui)
+        /* Inicializa scroll animations (GSAP ScrollTrigger) */
         initScrollAnimations();
     }
 

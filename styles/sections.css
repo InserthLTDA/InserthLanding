@@ -70,7 +70,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     padding: 0 40px;
-    color: rgba(0,0,0,0.28);
+    color: rgba(0,0,0,0.48);
 }
 
 /* ── SEÇÕES CLARAS — base ── */
@@ -285,7 +285,7 @@
     font-size: clamp(15px, 2vw, 20px);
     font-weight: 400;
     letter-spacing: -0.01em;
-    color: rgba(0, 0, 0, 0.42);
+    color: rgba(0, 0, 0, 0.62);
     margin-bottom: 14px;
     line-height: 1.4;
 }
@@ -293,7 +293,7 @@
 .product-hero-desc {
     font-size: 14px;
     line-height: 1.75;
-    color: rgba(0, 0, 0, 0.30);
+    color: rgba(0, 0, 0, 0.52);
     max-width: 420px;
     margin: 0 auto;
 }
@@ -419,7 +419,7 @@
 .bento-desc {
     font-size: 13px;
     line-height: 1.65;
-    color: rgba(0, 0, 0, 0.42);
+    color: rgba(0, 0, 0, 0.56);
 }
 
 /* Wide card subtle green glow in corner */
@@ -563,7 +563,7 @@
     color: var(--text-dark-secondary);
     margin-bottom: 14px;
     display: block;
-    opacity: 0.55;
+    opacity: 0.80;
 }
 
 .advantage-card h4 {
@@ -679,7 +679,7 @@
 
 .niche-card p {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: rgba(0, 0, 0, 0.58);
     line-height: 1.55;
 }
 
@@ -826,7 +826,7 @@
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.38);
+    color: rgba(0, 0, 0, 0.56);
     margin-bottom: 6px;
 }
 .pricing-featured .pricing-tier { color: rgba(255,255,255,0.38); }
@@ -855,7 +855,7 @@
     font-family: var(--font-display);
     font-size: 20px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.38);
+    color: rgba(0, 0, 0, 0.52);
     letter-spacing: -0.02em;
     align-self: flex-start;
     margin-top: 10px;
@@ -883,7 +883,7 @@
 /* Short description */
 .pricing-desc {
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.42);
+    color: rgba(0, 0, 0, 0.58);
     line-height: 1.55;
     margin-bottom: 28px;
 }
@@ -904,7 +904,7 @@
     align-items: center;
     gap: 10px;
     font-size: 13.5px;
-    color: rgba(0, 0, 0, 0.62);
+    color: rgba(0, 0, 0, 0.72);
     padding: 10px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     line-height: 1.4;

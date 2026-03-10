@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="styles/nav.css">
     <link rel="stylesheet" href="styles/hero.css">
     <link rel="stylesheet" href="styles/sections.css">
+    <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/responsive.css">
 </head>
 <body>
@@ -66,14 +67,14 @@
                 <a href="#product" onclick="closeMenu()">OPER</a>
                 <a href="#market"  onclick="closeMenu()">Mercado</a>
                 <a href="#pricing" onclick="closeMenu()">Planos</a>
-                <a href="#cta" class="nav-cta" onclick="closeMenu()">
+                <button data-modal="waitlist" onclick="closeMenu()" class="nav-cta">
                     <span class="nav-cta-inner">
                         <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="3.5" cy="3.5" r="3" fill="currentColor" opacity="0.9"/>
                         </svg>
                         Lista de espera
                     </span>
-                </a>
+                </button>
             </div>
             <div class="nav-mobile-toggle" id="mobile-toggle">
                 <span></span><span></span><span></span>
@@ -109,7 +110,7 @@
                         recupere seu tempo e veja resultados reais.
                     </p>
                     <div class="hero-actions">
-                        <a href="#cta" class="hero-btn hero-btn--primary">
+                        <button data-modal="waitlist" class="hero-btn hero-btn--primary">
                             <span class="hero-btn__shine"></span>
                             <span class="hero-btn__dot"></span>
                             <span class="hero-btn__label">Lista de espera</span>
@@ -118,7 +119,7 @@
                                     <path d="M2.5 6.5h8M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </span>
-                        </a>
+                        </button>
                         <a href="#product" class="hero-btn hero-btn--ghost">
                             <span class="hero-btn__label">Conheça o OPER</span>
                         </a>
@@ -456,7 +457,7 @@
                             <li>Relatório em áudio</li>
                             <li>Usuários ilimitados</li>
                         </ul>
-                        <button class="pricing-btn pricing-btn-green">Lista de espera</button>
+                        <button data-modal="waitlist" class="pricing-btn pricing-btn-green">Lista de espera</button>
                     </div>
 
                     <!-- Enterprise -->
@@ -495,7 +496,7 @@
                         Entre na lista de espera e garanta condições exclusivas de lançamento.
                     </p>
                     <div class="cta-btn-wrap">
-                        <a href="#" class="btn btn-filled">Entrar na lista de espera</a>
+                        <button data-modal="waitlist" class="btn btn-filled">Entrar na lista de espera</button>
                     </div>
                     <p class="cta-note">Acesso antecipado · Sem compromisso</p>
                 </div>
@@ -549,11 +550,74 @@
     </main>
 
     <!-- ════════════════════════════
+         MODAL — Lista de espera
+    ════════════════════════════ -->
+    <div id="waitlist-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close" aria-label="Fechar modal">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                    <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+                </svg>
+            </button>
+
+            <!-- Header -->
+            <img src="assets/64preto.png" alt="Inserth" class="modal-logo">
+            <h2 class="modal-title" id="modal-title-text">Entre na lista de espera</h2>
+            <p class="modal-subtitle">Acesso antecipado · Sem compromisso · Cancele quando quiser</p>
+
+            <!-- Form -->
+            <form class="modal-form" id="waitlist-form" novalidate>
+                <input
+                    type="text"
+                    id="modal-name"
+                    name="name"
+                    placeholder="Seu nome"
+                    autocomplete="name"
+                    required
+                >
+                <input
+                    type="email"
+                    id="modal-email"
+                    name="email"
+                    placeholder="seu@email.com"
+                    autocomplete="email"
+                    required
+                >
+                <input
+                    type="text"
+                    name="company"
+                    placeholder="Empresa (opcional)"
+                    autocomplete="organization"
+                >
+                <button type="submit" class="modal-submit" id="modal-submit">
+                    <span class="modal-submit-label">Quero acesso antecipado</span>
+                </button>
+            </form>
+            <p class="modal-note">Seus dados são privados. Nunca compartilhamos.</p>
+
+            <!-- Success state (hidden by default) -->
+            <div class="modal-success" id="modal-success">
+                <div class="modal-success-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="modal-success-title">Você está na lista!</div>
+                <p class="modal-success-desc">
+                    Vamos entrar em contato quando o acesso antecipado estiver disponível.
+                </p>
+                <button class="modal-success-close" id="modal-success-close">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════
          SCRIPTS
     ════════════════════════════ -->
     <script src="scripts/nav.js"></script>
     <script src="scripts/scroll.js"></script>
     <script src="scripts/loader.js"></script>
+    <script src="scripts/modal.js"></script>
 
 </body>
 </html> 
