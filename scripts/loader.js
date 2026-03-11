@@ -11,21 +11,44 @@
 ══════════════════════════════════ */
 
 (function () {
+    /* ── Refs DOM (necessárias para o fallback) ── */
+    const loaderContainerRef = document.getElementById('loader-container');
+    const mainContentRef     = document.getElementById('main-content');
+
+    /* ── Fallback rápido: se Three.js não carregar ou WebGL falhar ── */
+    if (typeof THREE === 'undefined') {
+        loaderContainerRef.style.display = 'none';
+        mainContentRef.style.opacity       = '1';
+        mainContentRef.style.pointerEvents = 'all';
+        if (typeof initScrollAnimations === 'function') initScrollAnimations();
+        return;
+    }
+
     /* ── Three.js setup ── */
     const wrapper  = document.getElementById('canvas-wrapper');
     const W = window.innerWidth;
     const H = window.innerHeight;
 
-    const scene    = new THREE.Scene();
-    const camera   = new THREE.OrthographicCamera(W / -2, W / 2, H / 2, H / -2, 1, 1000);
-    camera.position.set(400, 400, 400);
-    camera.lookAt(scene.position);
+    let scene, camera, renderer;
+    try {
+        scene    = new THREE.Scene();
+        camera   = new THREE.OrthographicCamera(W / -2, W / 2, H / 2, H / -2, 1, 1000);
+        camera.position.set(400, 400, 400);
+        camera.lookAt(scene.position);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(W, H);
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
-    wrapper.appendChild(renderer.domElement);
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(W, H);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+        wrapper.appendChild(renderer.domElement);
+    } catch (e) {
+        /* WebGL não disponível — mostra conteúdo imediatamente */
+        loaderContainerRef.style.display = 'none';
+        mainContentRef.style.opacity       = '1';
+        mainContentRef.style.pointerEvents = 'all';
+        if (typeof initScrollAnimations === 'function') initScrollAnimations();
+        return;
+    }
 
     /* ── Iluminação ── */
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
@@ -172,6 +195,15 @@
     }
 
     requestAnimationFrame(renderLoop);
+
+    /* ── Fallback: força o conteúdo após 8s caso o WebGL/Three.js trave ── */
+    setTimeout(() => {
+        if (phase !== 'done') {
+            phase = 'done';
+            loaderContainer.style.display = 'none';
+            showMainContent();
+        }
+    }, 8000);
 
     /* ── Resize handler ── */
     window.addEventListener('resize', () => {

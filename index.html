@@ -413,6 +413,11 @@
                     <div class="section-label">05 — Planos</div>
                     <h2 class="section-heading">Simples. Sem contrato.</h2>
                     <p class="section-desc">Cancele quando quiser. Comece em minutos.</p>
+                    <!-- Segmented control (iOS style) -->
+                    <div class="pricing-toggle-wrap" role="group" aria-label="Período de cobrança">
+                        <button class="toggle-seg toggle-seg--active" data-period="month" type="button">Mensal</button>
+                        <button class="toggle-seg" data-period="year" type="button">Anual <span class="toggle-save">−20%</span></button>
+                    </div>
                 </div>
                 <div class="pricing-grid">
 
@@ -422,7 +427,7 @@
                         <div class="pricing-product">OPER</div>
                         <div class="pricing-price-wrap">
                             <span class="pricing-currency">R$</span>
-                            <span class="pricing-amount">297</span>
+                            <span class="pricing-amount" data-monthly="297" data-yearly="237">297</span>
                             <span class="pricing-period">/mês</span>
                         </div>
                         <p class="pricing-desc">Gestão operacional completa para começar.</p>
@@ -446,7 +451,7 @@
                         <div class="pricing-product">OPER</div>
                         <div class="pricing-price-wrap">
                             <span class="pricing-currency">R$</span>
-                            <span class="pricing-amount">497</span>
+                            <span class="pricing-amount" data-monthly="497" data-yearly="397">497</span>
                             <span class="pricing-period">/mês</span>
                         </div>
                         <p class="pricing-desc">Stack completo com módulos adicionais.</p>
@@ -466,7 +471,7 @@
                         <div class="pricing-product">White Label</div>
                         <div class="pricing-price-wrap">
                             <span class="pricing-currency">R$</span>
-                            <span class="pricing-amount">997</span>
+                            <span class="pricing-amount" data-monthly="997" data-yearly="797">997</span>
                             <span class="pricing-period">/mês</span>
                         </div>
                         <p class="pricing-desc">API para agências com sua marca.</p>
@@ -481,15 +486,20 @@
                     </div>
 
                 </div>
+                <p class="pricing-annual-note" id="pricing-annual-note">* cobrado anualmente · cancele quando quiser</p>
             </div>
         </section>
 
         <!-- ── CTA ── -->
         <section class="cta" id="cta">
             <div class="cta-glow"></div>
+            <!-- Decorative arcs -->
+            <div class="cta-arc cta-arc--1" aria-hidden="true"></div>
+            <div class="cta-arc cta-arc--2" aria-hidden="true"></div>
+            <div class="cta-arc cta-arc--3" aria-hidden="true"></div>
             <div class="container cta-inner">
                 <div class="reveal">
-                    <img src="assets/64branco.png" alt="Inserth" class="cta-logo">
+                    <img src="assets/64preto.png" alt="Inserth" class="cta-logo">
                     <div class="cta-label">Estamos construindo algo grande</div>
                     <h2 class="cta-heading">Seja um dos primeiros.</h2>
                     <p class="section-desc">
@@ -517,6 +527,32 @@
                         </svg>
                         Pré-lançamento 2026
                     </span>
+                    <div class="footer-social">
+                        <a href="https://instagram.com/inserth.co" class="footer-social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com/company/inserth" class="footer-social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                <rect x="2" y="9" width="4" height="12"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                        <a href="https://x.com/inserth_ia" class="footer-social-link" aria-label="X (Twitter)" target="_blank" rel="noopener noreferrer">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.745l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/5543999935759" class="footer-social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-nav">
                     <div class="footer-nav-col">
@@ -541,6 +577,7 @@
             <div class="footer-bottom">
                 <span>© 2026 Inserth. Todos os direitos reservados.</span>
                 <div class="footer-bottom-links">
+                    <a href="mailto:oi@inserth.com.br" class="footer-bottom-email">oi@inserth.com.br</a>
                     <span>Brasil</span>
                     <span>Pré-lançamento</span>
                 </div>

@@ -218,6 +218,29 @@
 }
 
 /* ── Base compartilhada ── */
+/* ══════════════════════════════════════════
+   HERO BUTTON — production-grade component
+   ══════════════════════════════════════════ */
+
+/* ── Keyframes ── */
+@keyframes sweepShine {
+    0%   { transform: translateX(-150%) skewX(-20deg); }
+    100% { transform: translateX(350%)  skewX(-20deg); }
+}
+
+@keyframes heroDotBreath {
+    0%, 100% { box-shadow: 0 0 6px 1px rgba(48, 209, 88, 0.55); }
+    50%       { box-shadow: 0 0 12px 3px rgba(48, 209, 88, 0.85); }
+}
+
+@keyframes heroDotRing {
+    0%   { box-shadow: 0 0 0 0   rgba(48, 209, 88, 0.5); opacity: 1; }
+    70%  { box-shadow: 0 0 0 8px rgba(48, 209, 88, 0);   opacity: 0; }
+    100% { box-shadow: 0 0 0 0   rgba(48, 209, 88, 0);   opacity: 0; }
+}
+
+
+/* ── Base ── */
 .hero-btn {
     position: relative;
     display: inline-flex;
@@ -226,7 +249,7 @@
     padding: 0 28px 0 24px;
     height: 54px;
     border-radius: 980px;
-    border: none;
+    border: 1px solid transparent;   /* reserva espaço para a borda do ghost */
     font-family: var(--font);
     font-size: 15px;
     font-weight: 600;
@@ -235,116 +258,159 @@
     white-space: nowrap;
     cursor: pointer;
     overflow: hidden;
-    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    isolation: isolate;              /* cria stacking context limpo */
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+
     transition:
-        transform    0.4s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow   0.4s cubic-bezier(0.16, 1, 0.3, 1),
-        background   0.4s ease,
-        color        0.4s ease,
-        border-color 0.4s ease;
+        transform     0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow    0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        background    0.35s ease,
+        color         0.35s ease,
+        border-color  0.35s ease;
 }
+
+.hero-btn:focus-visible {
+    outline: 2px solid rgba(0, 125, 250, 0.75);
+    outline-offset: 3px;
+}
+
 .hero-btn:active {
     transform: scale(0.96) !important;
     transition-duration: 0.1s !important;
 }
 
-/* ── PRIMÁRIO — dark button on white bg ── */
-.hero-btn--primary {
-    background: linear-gradient(180deg, #1d1d1f 0%, #2c2c2e 100%);
-    color: #ffffff;
-    box-shadow:
-        0  4px 16px rgba(0,0,0,0.18),
-        0  8px 32px rgba(0,0,0,0.10),
-        inset 0 1px 0 rgba(255,255,255,0.10);
-    border: none;
-}
 
-/* Glare sweep on hover */
-.hero-btn__shine {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-    transform: translateX(-150%) skewX(-20deg);
-    pointer-events: none;
-    z-index: 2;
-}
-.hero-btn--primary:hover .hero-btn__shine {
-    animation: sweepShine 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-.hero-btn--primary:not(:hover) .hero-btn__shine {
-    animation: none;
-    transform: translateX(-150%) skewX(-20deg);
+/* ══ PRIMÁRIO — dark pill on light bg ══ */
+.hero-btn--primary {
+    background: linear-gradient(170deg, #1d1d1f 0%, #2c2c2e 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow:
+        0 2px  8px  rgba(0, 0, 0, 0.14),
+        0 6px  20px rgba(0, 0, 0, 0.12),
+        0 14px 40px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 .hero-btn--primary:hover {
     transform: translateY(-2px) scale(1.02);
-    background: linear-gradient(180deg, #2c2c2e 0%, #3a3a3c 100%);
+    background: linear-gradient(170deg, #2c2c2e 0%, #3a3a3c 100%);
     box-shadow:
-        0 8px 28px  rgba(0,0,0,0.22),
-        0 16px 48px rgba(0,0,0,0.14);
+        0 4px  12px rgba(0, 0, 0, 0.18),
+        0 10px 32px rgba(0, 0, 0, 0.16),
+        0 20px 56px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-/* Green dot */
+
+/* ── Glare sweep ── */
+.hero-btn__shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%; 
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.14) 50%,
+        transparent 100%
+    );
+    transform: translateX(-160%) skewX(-20deg);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.hero-btn--primary:hover .hero-btn__shine {
+    animation: sweepShine 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.hero-btn--primary:not(:hover) .hero-btn__shine {
+    animation: none;
+    transform: translateX(-160%) skewX(-20deg);
+}
+
+
+/* ── Green status dot ── */
 .hero-btn__dot {
     position: relative;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #30d158;
     flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(48,209,88,0.7);
+    background: #30d158;
+    box-shadow: 0 0 6px 1px rgba(48, 209, 88, 0.55);
     animation: heroDotBreath 3s ease-in-out infinite;
 }
+
 .hero-btn__dot::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
 }
+
 .hero-btn--primary:hover .hero-btn__dot::after {
-    animation: heroDotRing 2.5s ease-out infinite;
+    animation: heroDotRing 2.2s ease-out infinite;
 }
 
-/* Arrow icon */
+
+/* ── Arrow icon ── */
 .hero-btn__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: rgba(255,255,255,0.40);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-}
-.hero-btn--primary:hover .hero-btn__icon {
-    transform: translateX(4px);
-    color: rgba(255,255,255,0.85);
+    color: rgba(255, 255, 255, 0.38);
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        color     0.3s ease;
 }
 
-/* ── FANTASMA — light outline on white bg ── */
-.hero-btn--ghost {
-    background: rgba(0,0,0,0.04);
-    color: rgba(0,0,0,0.72);
-    padding: 0 28px;
-    border: 1px solid rgba(0,0,0,0.12);
-    box-shadow: none;
+.hero-btn--primary:hover .hero-btn__icon {
+    transform: translateX(5px);
+    color: rgba(255, 255, 255, 0.82);
 }
+
+
+/* ══ GHOST — light outline on light bg ══ */
+.hero-btn--ghost {
+    background: rgba(0, 0, 0, 0.03);
+    color: rgba(0, 0, 0, 0.68);
+    padding: 0 28px;
+    border-color: rgba(0, 0, 0, 0.11);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
 .hero-btn--ghost:hover {
-    background: rgba(0,0,0,0.07);
+    background: rgba(0, 0, 0, 0.065);
     color: #1d1d1f;
-    border-color: rgba(0,0,0,0.22);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-color: rgba(0, 0, 0, 0.20);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        0 2px  8px rgba(0, 0, 0, 0.07),
+        0 6px 20px rgba(0, 0, 0, 0.06);
     transform: translateY(-2px) scale(1.02);
 }
 
-/* ── Bottom fade → white ── */
+
+/* ══ Hero fade — bottom veil ══ */
 .hero-fade-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 200px;
-    background: linear-gradient(to bottom, transparent, #f5f5f7);
-    z-index: 4;
+    height: 220px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(245, 245, 247, 0.6) 40%,
+        #f5f5f7 100%
+    );
     pointer-events: none;
+    z-index: 4;
 }

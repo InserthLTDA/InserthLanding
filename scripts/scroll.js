@@ -674,6 +674,51 @@ function initOperDots() {
 }
 
 /* ══════════════════════════════════
+   PRICING — Segmented Control (iOS)
+══════════════════════════════════ */
+(function () {
+    const wrap       = document.querySelector('.pricing-toggle-wrap');
+    const annualNote = document.getElementById('pricing-annual-note');
+    if (!wrap) return;
+
+    function switchPeriod(isYearly) {
+        /* Atualiza o segmento ativo */
+        wrap.querySelectorAll('.toggle-seg').forEach(seg => {
+            seg.classList.toggle('toggle-seg--active',
+                isYearly ? seg.dataset.period === 'year' : seg.dataset.period === 'month'
+            );
+        });
+
+        /* Troca os valores de preço com animação fade */
+        document.querySelectorAll('.pricing-amount[data-monthly]').forEach(el => {
+            el.style.transition = 'opacity 0.16s ease, transform 0.16s ease';
+            el.style.opacity    = '0';
+            el.style.transform  = 'translateY(5px)';
+            setTimeout(() => {
+                el.textContent     = isYearly ? el.dataset.yearly : el.dataset.monthly;
+                el.style.opacity   = '1';
+                el.style.transform = 'translateY(0)';
+            }, 160);
+        });
+
+        /* Sufixo do período */
+        document.querySelectorAll('.pricing-period').forEach(el => {
+            el.textContent = isYearly ? '/mês*' : '/mês';
+        });
+
+        /* Nota anual */
+        if (annualNote) annualNote.classList.toggle('visible', isYearly);
+    }
+
+    /* Delegação de clique no wrapper */
+    wrap.addEventListener('click', e => {
+        const seg = e.target.closest('.toggle-seg');
+        if (!seg) return;
+        switchPeriod(seg.dataset.period === 'year');
+    });
+})();
+
+/* ══════════════════════════════════
    SMOOTH SCROLL — Âncoras internas
 ══════════════════════════════════ */
 document.querySelectorAll('a[href^="#"]').forEach(a => {

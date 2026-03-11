@@ -1,7 +1,7 @@
 
 @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
 }
 
 @keyframes footerLinkShimmer {
@@ -52,25 +52,64 @@
 /* ── MARQUEE ── */
 .marquee {
     background: var(--bg-light);
-    border-top: 1px solid rgba(0,0,0,0.07);
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+    border-top:    1px solid rgba(0, 0, 0, 0.07);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
     overflow: hidden;
     padding: 14px 0;
+    transform: translateZ(0);
+    /* Fade nas bordas — fade suave em vez de corte abrupto */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
 }
 
 .marquee-track {
     display: flex;
-    animation: marquee 25s linear infinite;
+    width: max-content;
+    animation: marquee 28s linear infinite;
     white-space: nowrap;
+
+    /* Composição GPU limpa */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Pausa ao hover — UX refinado */
+.marquee:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+/* Respeita preferência de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none;
+    }
 }
 
 .marquee-track span {
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     padding: 0 40px;
-    color: rgba(0,0,0,0.48);
+    color: rgba(0, 0, 0, 0.42);
+    transition: color 0.3s ease;
+}
+
+/* Destaque sutil no item hovered */
+.marquee-track span:hover {
+    color: rgba(0, 0, 0, 0.72);
 }
 
 /* ── SEÇÕES CLARAS — base ── */
@@ -684,14 +723,15 @@
 }
 
 /* ════════════════════════════════
-   05 — PREÇOS (light — Apple white + dark Pro card)
+   05 — PREÇOS (white — Apple aurora gradient)
 ════════════════════════════════ */
 .pricing {
     padding: 140px 0;
     background:
-        radial-gradient(ellipse 70% 60% at 96% 8%, rgba(48,209,88,0.04) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 50% at 4% 92%, rgba(0,0,0,0.015) 0%, transparent 55%),
-        #f5f5f7;
+        radial-gradient(ellipse 58% 52% at 2% 0%,   rgba(0,122,255,0.045)  0%, transparent 52%),
+        radial-gradient(ellipse 52% 52% at 98% 100%, rgba(88,86,214,0.04)   0%, transparent 52%),
+        radial-gradient(ellipse 48% 55% at 96%   5%, rgba(48,209,88,0.035) 0%, transparent 50%),
+        #ffffff;
     color: var(--text-dark);
     position: relative;
     overflow: hidden;
@@ -976,46 +1016,52 @@
 }
 
 /* ════════════════════════════════
-   CTA (seção escura — contraste final)
+   CTA (branca — Apple aurora gradient)
 ════════════════════════════════ */
 .cta {
-    padding: 180px 0;
+    padding: 240px 0;
     text-align: center;
-    background: #1d1d1f;
-    color: #f5f5f7;
+    background:
+        radial-gradient(ellipse 65% 70% at -8% 50%,  rgba(88,86,214,0.08)  0%, transparent 55%),
+        radial-gradient(ellipse 55% 60% at 108% 50%, rgba(48,209,88,0.07)  0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 50% 115%, rgba(0,122,255,0.06)  0%, transparent 55%),
+        #ffffff;
+    color: #1d1d1f;
     position: relative;
     overflow: hidden;
 }
 
-/* Grade de fundo sutil */
+/* Grade de fundo sutil — linhas escuras sobre branco */
 .cta::after {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
     background-size: 80px 80px;
     mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 0%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 0%, transparent 100%);
     pointer-events: none;
+    z-index: 0;
 }
 
-/* Glow central animado */
+/* Glow central — aurora suave */
 .cta-glow {
     position: absolute;
-    width: 800px;
-    height: 800px;
+    width: 900px;
+    height: 900px;
     border-radius: 50%;
     background: radial-gradient(circle,
-        rgba(255,255,255,0.04) 0%,
-        rgba(255,255,255,0.015) 35%,
+        rgba(88,86,214,0.06) 0%,
+        rgba(0,122,255,0.03) 38%,
         transparent 70%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    animation: glowPulse 5s ease-in-out infinite;
+    animation: glowPulse 6s ease-in-out infinite;
+    z-index: 0;
 }
 
 .cta-inner {
@@ -1035,7 +1081,7 @@
     font-size: 10px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.38);
+    color: rgba(0,0,0,0.36);
     margin-bottom: 28px;
 }
 .cta-label::before,
@@ -1044,20 +1090,21 @@
     display: block;
     width: 32px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.18));
 }
 .cta-label::after {
-    background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
+    background: linear-gradient(90deg, rgba(0,0,0,0.18), transparent);
 }
 
-/* Logo mark in CTA */
+/* Logo mark in CTA — dark logo on white */
 .cta-logo {
     height: 36px;
     width: auto;
     margin: 0 auto 32px;
     display: block;
-    opacity: 0.70;
+    opacity: 0.65;
     transition: opacity 0.3s ease;
+    filter: none;
 }
 .cta-logo:hover { opacity: 0.90; }
 
@@ -1068,7 +1115,7 @@
     line-height: 1.04;
     letter-spacing: -0.03em;
     margin-bottom: 20px;
-    background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.78) 100%);
+    background: linear-gradient(180deg, #1d1d1f 0%, rgba(29,29,31,0.72) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1076,30 +1123,29 @@
 
 .cta .section-desc {
     font-weight: 300;
-    color: rgba(255,255,255,0.42);
+    color: rgba(0,0,0,0.44);
     max-width: 380px;
     margin: 0 auto 48px;
     line-height: 1.7;
     letter-spacing: 0.01em;
 }
 
-/* Botão CTA — sofisticado com borda gradiente */
+/* Botão CTA — dark premium com borda gradiente */
 .cta-btn-wrap {
     position: relative;
     display: inline-flex;
     border-radius: 980px;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.25) 100%);
-    transition: background 0.3s ease;
+    background: linear-gradient(135deg, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.06) 50%, rgba(0,0,0,0.16) 100%);
     transition: background 0.3s ease;
 }
 .cta-btn-wrap:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.45) 100%);
+    background: linear-gradient(135deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.28) 100%);
 }
 .cta-btn-wrap .btn-filled {
     border-radius: 980px;
-    background: #f5f5f7;
-    color: #080808;
+    background: #1d1d1f;
+    color: #ffffff;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.01em;
@@ -1107,15 +1153,15 @@
     transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 .cta-btn-wrap:hover .btn-filled {
-    background: #ffffff;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.08);
+    background: #000000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 0 40px rgba(88,86,214,0.12);
 }
 
 /* Nota discreta abaixo do botão */
 .cta-note {
     margin-top: 20px;
     font-size: 12px;
-    color: rgba(255,255,255,0.22);
+    color: rgba(0,0,0,0.24);
     letter-spacing: 0.02em;
     font-family: var(--font-mono);
 }
@@ -1124,7 +1170,7 @@
    FOOTER — Professional layout
 ════════════════════════════════ */
 .footer {
-    background: #1d1d1f;
+    background: linear-gradient(160deg, #151520 0%, #1a1a22 30%, #1d1d1f 60%, #0e0e10 100%);
     border-top: 1px solid rgba(255,255,255,0.08);
     padding: 0;
     color: var(--text-secondary);
@@ -1302,6 +1348,220 @@
 }
 
 /* ════════════════════════════════
+   PRICING — Dot grid background
+════════════════════════════════ */
+.pricing::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.055) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 10%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 10%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Featured card accent top line */
+.pricing-featured::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18%;
+    right: 18%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+    pointer-events: none;
+    opacity: 0.55;
+    border-radius: 0;
+}
+
+/* ════════════════════════════════
+   PRICING — Segmented Control (iOS style)
+════════════════════════════════ */
+.pricing-toggle-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 28px;
+    background: rgba(0,0,0,0.055);
+    border-radius: 13px;
+    padding: 4px;
+}
+
+.toggle-seg {
+    padding: 9px 22px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.40);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+    letter-spacing: -0.01em;
+    transition: color 0.22s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+    position: relative;
+}
+
+.toggle-seg--active {
+    background: #ffffff;
+    color: #1d1d1f;
+    font-weight: 500;
+    box-shadow:
+        0 1px 6px rgba(0,0,0,0.12),
+        0 0.5px 2px rgba(0,0,0,0.08);
+    transition:
+        background 0.22s ease,
+        box-shadow 0.22s ease,
+        color 0.22s ease;
+}
+
+.toggle-save {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--accent-green);
+    background: rgba(48, 209, 88, 0.10);
+    border: 1px solid rgba(48, 209, 88, 0.22);
+    border-radius: 980px;
+    padding: 2px 7px;
+}
+
+/* Annual billing note */
+.pricing-annual-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: rgba(0,0,0,0.30);
+    text-align: center;
+    margin-top: 36px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.pricing-annual-note.visible {
+    opacity: 1;
+}
+
+/* ════════════════════════════════
+   CTA — Decorative Arcs
+════════════════════════════════ */
+@keyframes ctaArcFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    40%        { transform: translate(24px, -20px) scale(1.03); }
+    70%        { transform: translate(-16px, 14px) scale(0.97); }
+}
+
+@keyframes ctaArcFloatB {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    35%        { transform: translate(-20px, 18px) scale(1.04); }
+    68%        { transform: translate(14px, -10px) scale(0.98); }
+}
+
+.cta-arc {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.cta-arc--1 {
+    width: 720px;
+    height: 720px;
+    border: 130px solid rgba(88,86,214,0.10);
+    top: -300px;
+    left: -220px;
+    filter: blur(16px);
+    animation: ctaArcFloat 16s ease-in-out infinite;
+}
+
+.cta-arc--2 {
+    width: 580px;
+    height: 580px;
+    border: 110px solid rgba(48,209,88,0.12);
+    bottom: -240px;
+    right: -200px;
+    filter: blur(12px);
+    animation: ctaArcFloatB 13s ease-in-out infinite;
+}
+
+.cta-arc--3 {
+    width: 320px;
+    height: 320px;
+    border: 60px solid rgba(0,122,255,0.09);
+    top: 20%;
+    right: 6%;
+    filter: blur(9px);
+    animation: ctaArcFloat 9s ease-in-out infinite reverse;
+}
+
+/* ════════════════════════════════
+   FOOTER — Social Links
+════════════════════════════════ */
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.footer-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 9px;
+    color: rgba(255,255,255,0.38);
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+}
+
+.footer-social-link:hover {
+    background: rgba(255,255,255,0.11);
+    border-color: rgba(255,255,255,0.20);
+    color: rgba(255,255,255,0.80);
+    transform: translateY(-2px);
+}
+
+.footer-social-link::after { display: none; }
+
+/* Email link in footer bottom */
+.footer-bottom-email {
+    font-size: 12px;
+    color: rgba(255,255,255,0.28);
+    text-decoration: none;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: rgba(255,255,255,0.28) !important;
+    background-clip: initial !important;
+    transition: color 0.22s ease, -webkit-text-fill-color 0.22s ease;
+}
+
+.footer-bottom-email:hover {
+    color: rgba(255,255,255,0.60);
+    -webkit-text-fill-color: rgba(255,255,255,0.60) !important;
+}
+
+.footer-bottom-email::after { display: none; }
+
+/* ════════════════════════════════
    PERFORMANCE — Mobile & reduced motion
 ════════════════════════════════ */
 
@@ -1310,7 +1570,10 @@
     .product-bg-glow,
     .pricing-bg-glow,
     .cta-glow,
-    .bento-glow          { display: none; }
+    .bento-glow,
+    .cta-arc             { display: none; }
+
+    .pricing::before     { display: none; }
 
     /* Simplify nav blur on mobile (expensive) */
     .nav {

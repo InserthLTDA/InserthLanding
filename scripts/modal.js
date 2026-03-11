@@ -11,7 +11,7 @@
     /* Para envio real de emails, crie uma conta gratuita em formspree.io
        e substitua pelo seu endpoint:
        const WAITLIST_ENDPOINT = 'https://formspree.io/f/SEU_ID_AQUI'; */
-    const WAITLIST_ENDPOINT = null;   // null = apenas localStorage
+    const WAITLIST_ENDPOINT = 'https://formspree.io/f/myknwlyj';   // null = apenas localStorage
 
     /* ── Refs ── */
     const overlay    = document.getElementById('waitlist-modal');

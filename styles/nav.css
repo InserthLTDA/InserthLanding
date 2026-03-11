@@ -88,7 +88,7 @@
 /* ══════════════════════════════════
    CTA — mesma técnica do btn-waitlist
 ══════════════════════════════════ */
-.nav-cta {
+  .nav-cta-orig {
     position: relative;
     display: inline-flex !important;
     align-items: center;
@@ -96,70 +96,179 @@
     border-radius: 980px;
     border: none;
     font-family: inherit;
-    background: linear-gradient(
-        135deg,
-        rgba(0,0,0,0.28) 0%,
-        rgba(0,0,0,0.06) 50%,
-        rgba(0,0,0,0.18) 100%
-    );
-    box-shadow:
-        0 0 0 1px rgba(0,0,0,0.04),
-        0 2px 8px rgba(0,0,0,0.08);
-    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
-                box-shadow 0.25s ease,
-                background  0.25s ease;
+    background: linear-gradient(135deg,rgba(0,0,0,0.28) 0%,rgba(0,0,0,0.06) 50%,rgba(0,0,0,0.18) 100%);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.08);
     cursor: pointer;
-    /* reset herança dos nav-links a */
-    -webkit-background-clip: unset !important;
-    -webkit-text-fill-color: unset !important;
-    background-clip: unset !important;
-    filter: none !important;
-    animation: none !important;
-}
-.nav-cta:hover {
-    transform: scale(1.03) translateY(-1px);
-    background: linear-gradient(
-        135deg,
-        rgba(0,0,0,0.45) 0%,
-        rgba(0,0,0,0.10) 50%,
-        rgba(0,0,0,0.32) 100%
-    );
-    box-shadow:
-        0 0 0 1px rgba(0,0,0,0.08),
-        0 6px 16px rgba(0,0,0,0.12);
-    filter: none !important;
-    animation: none !important;
-}
-.nav-cta:active {
-    transform: scale(0.975);
-}
-.nav-cta::after { display: none !important; }
-
-.nav-cta-inner {
+  }
+  .nav-cta-orig-inner {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 5px 13px 5px 10px;
     border-radius: 980px;
     background: rgba(0,0,0,0.04);
-    font-family: var(--font);
+    font-family: inherit;
     font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0.01em;
     color: rgba(0,0,0,0.78);
     white-space: nowrap;
-    transition: background 0.25s ease;
-}
-.nav-cta:hover .nav-cta-inner {
-    background: rgba(0,0,0,0.07);
-}
-
-/* Ponto verde */
-.nav-cta-inner svg {
-    color: #30d158;
+  }
+  .dot-orig {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #30d158;
+    box-shadow: 0 0 5px rgba(48,209,88,0.8);
     flex-shrink: 0;
-    filter: drop-shadow(0 0 3px rgba(48,209,88,0.8));
-}
+  }
+
+  /* ===========================
+     VERSÃO APRIMORADA — V1
+     Estilo: "Liquid Glass"
+     Translúcido, com brilho interno e
+     movimento suave como vidro molhado
+  =========================== */
+
+  .nav-cta {
+    --green: #30d158;
+    --green-glow: rgba(48, 209, 88, 0.5);
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.9);
+    --shadow-color: rgba(0,0,0,0.10);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 1.5px;
+    border-radius: 980px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Borda gradiente com brilho */
+  .nav-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 980px;
+    padding: 1.5px;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.95) 0%,
+      rgba(255,255,255,0.3) 30%,
+      rgba(200,200,200,0.2) 60%,
+      rgba(255,255,255,0.7) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 980px;
+    background: linear-gradient(
+      160deg,
+      rgba(255,255,255,0.8) 0%,
+      rgba(255,255,255,0.0) 50%,
+      rgba(255,255,255,0.15) 100%
+    );
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-cta-inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px 6px 10px;
+    border-radius: 980px;
+    background: rgba(255,255,255,0.48);
+    backdrop-filter: blur(16px) saturate(1.8);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.9) inset,
+      0 -1px 0 0 rgba(0,0,0,0.04) inset,
+      0 4px 16px rgba(0,0,0,0.08),
+      0 1px 4px rgba(0,0,0,0.06);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.005em;
+    color: rgba(0,0,0,0.72);
+    white-space: nowrap;
+    transition:
+      background 0.25s ease,
+      box-shadow 0.25s ease,
+      color 0.25s ease;
+  }
+
+  /* Ponto de status animado */
+  .nav-cta-dot {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow:
+      0 0 0 2.5px rgba(48,209,88,0.15),
+      0 0 6px var(--green-glow);
+    flex-shrink: 0;
+  }
+
+  /* Pulso do ponto */
+  .nav-cta-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0;
+    animation: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%   { transform: scale(0.6); opacity: 0.6; }
+    70%  { transform: scale(2.0); opacity: 0; }
+    100% { transform: scale(2.0); opacity: 0; }
+  }
+
+  /* Hover */
+  .nav-cta:hover .nav-cta-inner {
+    background: rgba(255,255,255,0.72);
+    color: rgba(0,0,0,0.85);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,1) inset,
+      0 -1px 0 0 rgba(0,0,0,0.05) inset,
+      0 8px 28px rgba(0,0,0,0.12),
+      0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .nav-cta:active {
+    transform: scale(0.97) translateY(0px);
+    transition: transform 0.12s ease;
+  }
+
+  .nav-cta:active .nav-cta-inner {
+    background: rgba(255,255,255,0.38);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.7) inset,
+      0 -1px 0 0 rgba(0,0,0,0.06) inset,
+      0 2px 8px rgba(0,0,0,0.06);
+  }
 
 
 /* ── Mobile ── */
